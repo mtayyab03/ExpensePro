@@ -1,0 +1,16 @@
+export default {
+  primary: "#007161",
+  blue: "#1677FF",
+  blacky: "#2F2F2F",
+  grey: "#595959",
+  lyellow: "#FFE58F",
+  yellow: "#FAAD14",
+  blacktext: "#1C1C1C",
+  red: "#E33315",
+  lightWhite: "#E5E5E5",
+  white: "#F7F7F7",
+  purewhite: "#ffffff",
+  textcolor: "#656567",
+  darkgrey: "#A0A0A0",
+  placeholder: "#0D104080",
+};
