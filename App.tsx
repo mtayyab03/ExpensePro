@@ -13,7 +13,7 @@ import NavigationStack from "./app/navigation/NavigationStack";
 //component
 import AppLoading from "./app/components/AppLoading";
 
-export default function App() {
+const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
     DMSans_500Medium,
@@ -29,4 +29,5 @@ export default function App() {
       </NavigationContainer>
     );
   }
-}
+};
+export default App;

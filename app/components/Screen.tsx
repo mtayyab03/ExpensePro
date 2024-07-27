@@ -1,9 +1,23 @@
 import React from "react";
-import { Platform, SafeAreaView, StyleSheet, StatusBar } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+  ViewStyle,
+} from "react-native";
 //config
 import Colors from "../config/Colors";
-
-function Screen({ children, statusBarColor = Colors.primary, style }) {
+interface ScreenProps {
+  children: any;
+  statusBarColor?: string;
+  style?: ViewStyle;
+}
+const Screen: React.FC<ScreenProps> = ({
+  children,
+  statusBarColor = Colors.primary,
+  style,
+}) => {
   return (
     <SafeAreaView style={[styles.screen, style]}>
       {Platform.OS === "android" ? (
@@ -12,7 +26,7 @@ function Screen({ children, statusBarColor = Colors.primary, style }) {
       {children}
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   screen: {

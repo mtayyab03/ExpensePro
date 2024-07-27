@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
 //config
 import Colors from "../config/Colors";
 
-export default function AppLine() {
+const AppLine: React.FC = () => {
   return (
     <View
       style={{
@@ -16,4 +16,5 @@ export default function AppLine() {
       }}
     />
   );
-}
+};
+export default AppLine;

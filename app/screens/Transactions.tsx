@@ -24,7 +24,7 @@ import icons from "../config/icons";
 import Screen from "../components/Screen";
 import AppLine from "../components/AppLine";
 
-const Transactions = () => {
+const Transactions: React.FC = () => {
   const transactionSlip = [
     {
       id: 1,

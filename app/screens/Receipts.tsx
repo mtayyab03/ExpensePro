@@ -19,7 +19,7 @@ import icons from "../config/icons";
 import Screen from "../components/Screen";
 import AppLine from "../components/AppLine";
 
-const Receipts = () => {
+const Receipts: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const transactionSlip = [
     {
@@ -348,13 +348,11 @@ const styles = StyleSheet.create({
     height: RFPercentage(5),
     marginVertical: RFPercentage(0.5),
     justifyContent: "space-between",
-
     flexDirection: "row",
   },
 
-  img: { width: RFPercentage(3), height: RFPercentage(3) },
-
   inputtext: {
+    width: "75%",
     fontSize: RFPercentage(1.8),
     color: Colors.blacky,
     fontFamily: FontFamily.regular,

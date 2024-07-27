@@ -29,10 +29,10 @@ import icons from "../config/icons";
 import { FontFamily } from "../config/font";
 
 const Tab = createBottomTabNavigator();
-const EmptyScreen = () => {
+const EmptyScreen: React.FC = () => {
   return null;
 };
-export default function BottomTab() {
+const BottomTab: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleIconPress = () => {
@@ -48,7 +48,7 @@ export default function BottomTab() {
           tabBarStyle: {
             height: wp("18%"),
             padding: Platform.OS === "ios" ? 20 : 5,
-            background: "#fff",
+            backgroundColor: "#fff",
           },
         }}
       >
@@ -303,13 +303,12 @@ export default function BottomTab() {
       </Modal>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   activeIcon: {
     width: RFPercentage(6),
     height: RFPercentage(6),
-    backgroundColor: Colors.third,
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
@@ -326,3 +325,4 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.regular,
   },
 });
+export default BottomTab;
