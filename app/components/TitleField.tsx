@@ -11,10 +11,8 @@ const TitleField = ({
   keyboardType = "default",
   value,
   onChangeText,
-  validation,
+  error = false,
 }: any) => {
-  const [error, setError] = useState("");
-
   return (
     <>
       <View
@@ -37,35 +35,43 @@ const TitleField = ({
       </View>
 
       <View
-        style={{
-          width: "100%",
-          borderRadius: RFPercentage(1),
-          borderWidth: RFPercentage(0.1),
-          borderColor: error ? Colors.red : "#B7B7B7",
-          backgroundColor: Colors.white,
-          justifyContent: "center",
-          padding: RFPercentage(1.5),
-        }}
+        style={[
+          styles.inputcontainer,
+          error && styles.errorBorder, // Apply error style if there's an error
+        ]}
       >
         <TextInput
           style={{ width: RFPercentage(45), fontSize: RFPercentage(1.5) }}
           onChangeText={onChangeText}
           value={value}
-          placeholder={subtitle}
-          placeholderTextColor={Colors.lightgrey}
+          placeholder="e.g Meditarean supplier"
+          placeholderTextColor={Colors.grey}
           keyboardType={keyboardType}
         />
       </View>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  error: {
+  errorBorder: {
+    borderColor: Colors.red, // Change border color to red if there's an error
+    borderWidth: RFPercentage(0.1), // Slightly thicker border for visibility
+  },
+  errorText: {
     color: Colors.red,
     fontSize: RFPercentage(1.5),
     marginTop: RFPercentage(0.5),
+  },
+
+  inputcontainer: {
+    width: "100%",
+    borderRadius: RFPercentage(1),
+    borderWidth: RFPercentage(0.1),
+    borderColor: "#B7B7B7",
+    backgroundColor: Colors.white,
+    justifyContent: "center",
+    padding: RFPercentage(1.5),
   },
 });
 
