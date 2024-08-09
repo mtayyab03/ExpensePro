@@ -33,7 +33,12 @@ const ReceiptSubmit = ({ route }: any) => {
   const [date, setDate] = useState("03-06-2024");
   const [meal, setMeal] = useState("");
   const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    supplier: false,
+    amount: false,
+    date: false,
+    description: false,
+  });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -57,8 +62,8 @@ const ReceiptSubmit = ({ route }: any) => {
     setSelectedDate(selectedDate);
   };
   const { image: initialImage } = route.params;
-  // const initialimage = icons.picslip;
   const [image, setImage] = useState(initialImage);
+  // const image = icons.picslip;
   const handleReplaceImage = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -71,7 +76,32 @@ const ReceiptSubmit = ({ route }: any) => {
       setImage(imageUri);
     }
   };
+  const validateFields = () => {
+    const newError = {
+      supplier: supplier.trim() === "",
+      amount: amount.trim() === "",
+      date: date.trim() === "",
+      description: description.trim() === "",
+    };
 
+    setError(newError);
+
+    // Check if all fields are valid (no errors)
+    return !Object.values(newError).includes(true);
+  };
+
+  const handleSubmit = () => {
+    if (validateFields()) {
+      // Proceed with the submission process
+    } else {
+      // Handle the case where validation fails
+    }
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
   return (
     <Screen style={styles.screen}>
       <Header />
@@ -131,15 +161,40 @@ const ReceiptSubmit = ({ route }: any) => {
           }}
         >
           {image && (
-            <Image
-              source={{ uri: image }}
-              // source={image}
-              style={{
-                width: "100%",
-                height: RFPercentage(16),
-                backgroundColor: Colors.black,
-              }}
-            />
+            <>
+              <Image
+                source={{ uri: image }}
+                // source={image}
+                style={{
+                  width: "100%",
+                  height: RFPercentage(16),
+                  backgroundColor: Colors.black,
+                }}
+              />
+              <TouchableOpacity
+                style={styles.zoomButton}
+                onPress={toggleModal}
+                activeOpacity={0.7}
+              >
+                <FontAwesome5
+                  name="search-plus"
+                  size={20}
+                  color={Colors.white}
+                />
+              </TouchableOpacity>
+              <Modal visible={modalVisible} transparent={true}>
+                <TouchableOpacity
+                  style={styles.modalContainer}
+                  onPress={toggleModal}
+                >
+                  <Image
+                    source={{ uri: image }}
+                    style={styles.modalImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Modal>
+            </>
           )}
 
           <TouchableOpacity
@@ -214,9 +269,18 @@ const ReceiptSubmit = ({ route }: any) => {
           <TitleField
             title="Supplier"
             value={supplier}
-            onChangeText={setSupplier}
+            onChangeText={(text: any) => {
+              setSupplier(text);
+              setError((prev) => ({ ...prev, supplier: false }));
+            }}
             subtitle="e.g Supplier name"
+            error={error.supplier}
           />
+          {error.supplier && (
+            <Text style={styles.errorText}>
+              Please enter the supplier name.
+            </Text>
+          )}
 
           <View
             style={{
@@ -237,14 +301,25 @@ const ReceiptSubmit = ({ route }: any) => {
               >
                 Transaction Total
               </Text>
-              <View style={styles.doublefield}>
+              <View
+                style={[styles.doublefield, error.amount && styles.errorBorder]}
+              >
                 <TextInput
-                  onChangeText={setAmount}
+                  onChangeText={(text) => {
+                    setAmount(text);
+                    setError((prev) => ({ ...prev, amount: false }));
+                  }}
                   value={amount}
                   placeholder="$ 0.00"
                   placeholderTextColor={Colors.placeholder}
+                  style={styles.textInput}
                 />
               </View>
+              {error.amount && (
+                <Text style={styles.errorText}>
+                  Please enter the transaction total.
+                </Text>
+              )}
             </View>
             <View style={{ width: "48%" }}>
               <Text
@@ -257,21 +332,32 @@ const ReceiptSubmit = ({ route }: any) => {
               >
                 Date of Purchase
               </Text>
-              <View style={styles.doublefield}>
+              <View
+                style={[styles.doublefield, error.date && styles.errorBorder]}
+              >
                 <TextInput
-                  onChangeText={setDate}
+                  onChangeText={(text) => {
+                    setDate(text);
+                    setError((prev) => ({ ...prev, date: false }));
+                  }}
                   value={date}
                   placeholder="e.g 01-01-2024"
                   placeholderTextColor={Colors.placeholder}
+                  style={styles.textInput}
                 />
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={showDatePicker}
-                  style={{ position: "absolute", right: RFPercentage(1.5) }}
+                  style={styles.calendarIcon}
                 >
                   <Feather name="calendar" size={20} color={Colors.grey} />
                 </TouchableOpacity>
               </View>
+              {error.date && (
+                <Text style={styles.errorText}>
+                  Please select the date of purchase.
+                </Text>
+              )}
             </View>
           </View>
           {isDatePickerVisible && (
@@ -333,10 +419,10 @@ const ReceiptSubmit = ({ route }: any) => {
           </View>
         </View>
 
-        <>
+        <View style={{ width: "90%" }}>
           <View
             style={{
-              width: "90%",
+              width: "100%",
               justifyContent: "center",
               marginTop: RFPercentage(1),
             }}
@@ -354,31 +440,36 @@ const ReceiptSubmit = ({ route }: any) => {
           </View>
 
           <View
-            style={{
-              width: "90%",
-              height: RFPercentage(7),
-              borderRadius: RFPercentage(1),
-              borderWidth: RFPercentage(0.1),
-              borderColor: error ? Colors.red : Colors.grey,
-              justifyContent: "flex-start",
-              padding: RFPercentage(1),
-              marginBottom: RFPercentage(1.5),
-            }}
+            style={[
+              styles.descriptionInputContainer,
+              error.description && styles.errorBorder,
+            ]}
           >
             <TextInput
-              style={{ width: "90%" }}
-              onChangeText={setDescription}
+              style={styles.textInputDescription}
+              onChangeText={(text) => {
+                setDescription(text);
+                setError((prev) => ({ ...prev, description: false }));
+              }}
               value={description}
               placeholder="Enter Description"
               placeholderTextColor={Colors.placeholder}
               multiline
             />
           </View>
-          {error ? <Text style={styles.error}>{error}</Text> : null}
-        </>
+          {error.description && (
+            <Text style={styles.errorText}>
+              Please enter a short description.
+            </Text>
+          )}
+        </View>
 
         {/* buttons */}
-        <TouchableOpacity style={styles.loginbutton} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.loginbutton}
+          onPress={handleSubmit}
+          activeOpacity={0.7}
+        >
           <AppButton title="Submit Receipt" buttonColor={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity
@@ -408,6 +499,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
+  zoomButton: {
+    position: "absolute",
+    top: RFPercentage(1),
+    right: RFPercentage(1),
+    backgroundColor: Colors.black,
+    padding: RFPercentage(1),
+    borderRadius: RFPercentage(1),
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalImage: {
+    width: "90%",
+    height: "90%",
+  },
   loginbutton: {
     paddingVertical: RFPercentage(1.5),
     width: "100%",
@@ -435,5 +544,133 @@ const styles = StyleSheet.create({
     color: Colors.red,
     fontSize: RFPercentage(1.5),
     marginTop: RFPercentage(0.5),
+  },
+  titleContainer: {
+    width: "90%",
+    marginVertical: RFPercentage(1.3),
+  },
+  title: {
+    color: Colors.blacktext,
+    fontFamily: FontFamily.bold,
+    fontSize: RFPercentage(2.2),
+  },
+  subTitleContainer: {
+    width: "90%",
+    marginVertical: RFPercentage(1.5),
+  },
+  subTitle: {
+    color: Colors.blacktext,
+    fontFamily: FontFamily.bold,
+    fontSize: RFPercentage(2),
+  },
+  imageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: RFPercentage(1.5),
+    width: "90%",
+    height: RFPercentage(22),
+    borderRadius: RFPercentage(1),
+    backgroundColor: Colors.lightgrey,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: RFPercentage(1),
+  },
+  replaceButton: {
+    marginTop: RFPercentage(2),
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  replaceButtonText: {
+    marginLeft: RFPercentage(0.5),
+    color: Colors.primary,
+    fontSize: RFPercentage(1.8),
+    fontFamily: FontFamily.medium,
+  },
+  autoFillContainer: {
+    width: "90%",
+    marginTop: RFPercentage(2),
+    marginBottom: RFPercentage(3),
+  },
+  autoFillHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  autoFillHeaderText: {
+    color: Colors.blacktext,
+    fontFamily: FontFamily.medium,
+    fontSize: RFPercentage(1.8),
+  },
+  verifyText: {
+    color: Colors.grey,
+    fontFamily: FontFamily.regular,
+    fontSize: RFPercentage(1.6),
+  },
+  rowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: RFPercentage(2),
+  },
+  halfWidth: {
+    width: "48%",
+  },
+  label: {
+    color: Colors.blacktext,
+    fontFamily: FontFamily.regular,
+    fontSize: RFPercentage(1.6),
+  },
+
+  textInput: {
+    color: Colors.blacktext,
+    fontFamily: FontFamily.regular,
+    fontSize: RFPercentage(1.8),
+  },
+  calendarIcon: {
+    marginLeft: RFPercentage(1),
+  },
+  errorBorder: {
+    borderColor: Colors.red,
+  },
+  mealContainer: {
+    width: "90%",
+    marginTop: RFPercentage(2),
+  },
+  mealInputContainer: {
+    marginTop: RFPercentage(1),
+    borderBottomColor: Colors.lightgrey,
+    borderBottomWidth: 1,
+  },
+  descriptionContainer: {
+    width: "90%",
+    marginTop: RFPercentage(2),
+  },
+  descriptionInputContainer: {
+    width: "100%",
+    height: RFPercentage(7),
+    borderRadius: RFPercentage(1),
+    borderWidth: RFPercentage(0.1),
+    borderColor: Colors.grey,
+    justifyContent: "flex-start",
+    padding: RFPercentage(1),
+  },
+  textInputDescription: {
+    color: Colors.blacktext,
+    fontFamily: FontFamily.regular,
+    fontSize: RFPercentage(1.8),
+  },
+  errorText: {
+    color: Colors.red,
+    fontFamily: FontFamily.regular,
+    fontSize: RFPercentage(1.6),
+    marginTop: RFPercentage(0.5),
+  },
+
+  cancelButton: {
+    width: "90%",
+    alignItems: "center",
+    marginVertical: RFPercentage(2),
   },
 });
