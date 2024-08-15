@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -7,9 +7,14 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
+  Animated,
+  Easing,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
+import FlashMessage from "react-native-flash-message";
+import * as ImagePicker from "expo-image-picker";
+
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -22,13 +27,37 @@ import AppLine from "../components/AppLine";
 import Alert from "../components/Alert";
 import Header from "../components/Header";
 import Transaction from "../components/Transaction";
+import SidedText from "../components/SidedText";
 
 // models
-import postedTransactions from "../models/postedTransactions";
+// import postedTransactions from "../models/postedTransactions";
 
 const Transactions: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    if (isModalVisible || isStatusModalVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isModalVisible || isStatusModalVisible]);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
   const selectPcard = [
     {
       id: 1,
@@ -137,8 +166,308 @@ const Transactions: React.FC = () => {
       bgcolor: "#DFEEEC",
     },
   ];
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const handleTransactionPress = (transaction: any) => {
+    setSelectedTransaction(transaction);
+    setIsStatusModalVisible(true);
+  };
+
+  const [image, setImage] = useState("");
+  const handleReplaceImage = async () => {
+    let result: any = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      const imageUri = result.assets[0].uri;
+      setImage(imageUri);
+      setIsStatusModalVisible(false);
+    }
+  };
+  const renderModalContent = () => {
+    if (!selectedTransaction) return null;
+
+    const { status, title, amount, trendimage: image } = selectedTransaction;
+
+    if (status === "Missing Receipt") {
+      return (
+        <View
+          style={{
+            width: "100%",
+            overflow: "hidden",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              width: "90%",
+              backgroundColor: "#F5F5F5",
+              borderRadius: RFPercentage(1),
+              padding: RFPercentage(1.5),
+              marginVertical: RFPercentage(1),
+              overflow: "hidden",
+            }}
+          >
+            <Text style={styles.modalTitle}>Transaction Details</Text>
+
+            <SidedText name="Supplier" title={title} />
+            <SidedText name="Total" title={amount} />
+            <SidedText name="Transaction date" title="06-03-2024" />
+          </View>
+          <AppLine />
+
+          <TouchableOpacity
+            onPress={handleReplaceImage}
+            style={styles.loginbuttonStatus}
+            activeOpacity={0.7}
+          >
+            <AppButton title="Attch Receipt" buttonColor={Colors.primary} />
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (status === "Pending") {
+      return (
+        <>
+          {/* image replace */}
+          {/* image replace */}
+          <View
+            style={{
+              width: "90%",
+              borderRadius: RFPercentage(1),
+              backgroundColor: Colors.grey,
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              marginTop: RFPercentage(1),
+            }}
+          >
+            {image && (
+              <>
+                <Image
+                  source={image}
+                  // source={image}
+                  style={{
+                    width: "100%",
+                    height: RFPercentage(16),
+                    backgroundColor: Colors.black,
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.zoomButton}
+                  onPress={toggleModal}
+                  activeOpacity={0.7}
+                >
+                  <FontAwesome5
+                    name="search-plus"
+                    size={20}
+                    color={Colors.white}
+                  />
+                </TouchableOpacity>
+                <Modal visible={modalVisible} transparent={true}>
+                  <TouchableOpacity
+                    style={styles.modalContainer}
+                    onPress={toggleModal}
+                  >
+                    <Image
+                      source={image}
+                      style={styles.modalImage}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </Modal>
+              </>
+            )}
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={handleReplaceImage}
+              style={{
+                width: "100%",
+                backgroundColor: Colors.ilightwhite,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: RFPercentage(2),
+                flexDirection: "row",
+                borderWidth: RFPercentage(0.1),
+                borderColor: Colors.lightWhite,
+              }}
+            >
+              <FontAwesome5
+                name="exchange-alt"
+                size={20}
+                color={Colors.primary}
+              />
+              <Text
+                style={{
+                  marginLeft: RFPercentage(1),
+                  color: Colors.blacktext,
+                  fontFamily: FontFamily.regular,
+                  fontSize: RFPercentage(1.7),
+                }}
+              >
+                Replace
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              width: "100%",
+              overflow: "hidden",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                backgroundColor: "#F5F5F5",
+                borderRadius: RFPercentage(1),
+                padding: RFPercentage(1.5),
+                marginVertical: RFPercentage(1),
+                overflow: "hidden",
+              }}
+            >
+              <Text style={styles.modalTitle}>Transaction Details</Text>
+
+              <SidedText name="Supplier" title={title} />
+              <SidedText name="Total" title={amount} />
+              <SidedText name="Transaction date" title="06-03-2024" />
+              <View style={{ marginTop: RFPercentage(0.5) }} />
+              <AppLine />
+              <View style={{ marginBottom: RFPercentage(0.5) }} />
+
+              <SidedText name="Expense Category" title="Travel" />
+              <SidedText
+                name="Short Description
+                of Purchase"
+                title="Ride to Airport"
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => setIsStatusModalVisible(false)}
+            style={styles.loginbutton}
+            activeOpacity={0.7}
+          >
+            <AppButton title="Edit" buttonColor={Colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.loginbutton}
+            onPress={() => setIsStatusModalVisible(false)}
+            activeOpacity={0.7}
+          >
+            <View
+              style={{
+                width: "90%",
+                paddingVertical: RFPercentage(1.5),
+                borderRadius: RFPercentage(1),
+                borderWidth: RFPercentage(0.15),
+                borderColor: "#B7B7B7",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.buttontext}>Cancel</Text>
+            </View>
+          </TouchableOpacity>
+        </>
+      );
+    } else if (status === "Complete") {
+      return (
+        <>
+          {/* image replace */}
+          <View
+            style={{
+              width: "90%",
+              borderRadius: RFPercentage(1),
+              backgroundColor: Colors.grey,
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              marginTop: RFPercentage(1),
+            }}
+          >
+            {image && (
+              <>
+                <Image
+                  source={image}
+                  // source={image}
+                  style={{
+                    width: "100%",
+                    height: RFPercentage(16),
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.zoomButton}
+                  onPress={toggleModal}
+                  activeOpacity={0.7}
+                >
+                  <FontAwesome5
+                    name="search-plus"
+                    size={20}
+                    color={Colors.white}
+                  />
+                </TouchableOpacity>
+                <Modal visible={modalVisible} transparent={true}>
+                  <TouchableOpacity
+                    style={styles.modalContainer}
+                    onPress={toggleModal}
+                  >
+                    <Image
+                      source={image}
+                      style={styles.modalImage}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </Modal>
+              </>
+            )}
+          </View>
+
+          <View
+            style={{
+              width: "100%",
+              overflow: "hidden",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                backgroundColor: "#F5F5F5",
+                borderRadius: RFPercentage(1),
+                padding: RFPercentage(1.5),
+                marginVertical: RFPercentage(1),
+                overflow: "hidden",
+              }}
+            >
+              <Text style={styles.modalTitle}>Transaction Details</Text>
+
+              <SidedText name="Supplier" title={title} />
+              <SidedText name="Total" title={amount} />
+              <SidedText name="Transaction date" title="06-03-2024" />
+              <View style={{ marginTop: RFPercentage(0.5) }} />
+              <AppLine />
+              <View style={{ marginBottom: RFPercentage(0.5) }} />
+
+              <SidedText name="Expense Category" title="Travel" />
+              <SidedText
+                name="Short Description
+of Purchase"
+                title="Ride to Airport"
+              />
+            </View>
+          </View>
+        </>
+      );
+    }
+  };
   return (
     <Screen style={styles.screen}>
+      <FlashMessage position="top" />
       <Header />
 
       <View
@@ -230,15 +559,102 @@ const Transactions: React.FC = () => {
         showsVerticalScrollIndicator={false}
         style={{ width: "100%" }}
       >
-        {postedTransactions.map((item, i) => (
-          <Transaction key={i} item={item} />
+        {transactionSlip.map((item, i) => (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            key={i}
+            onPress={() => handleTransactionPress(item)}
+            style={{
+              width: "90%",
+              flexDirection: "row",
+              backgroundColor: Colors.white,
+              paddingVertical: RFPercentage(1.4),
+              paddingHorizontal: RFPercentage(1.9),
+              borderWidth: RFPercentage(0.17),
+              borderColor: Colors.lightWhite,
+              borderRadius: RFPercentage(1),
+              alignItems: "center",
+              marginVertical: RFPercentage(0.3),
+              justifyContent: "space-between",
+              // Shadow for iOS
+              shadowColor: "#000000", // Ensure color is solid enough
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.2, // Adjust opacity if necessary
+              shadowRadius: 2.84,
+              // Shadow for Android
+              elevation: 5,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={item.trendimage}
+                resizeMode="contain"
+                style={{
+                  height: RFPercentage(6),
+                  width: RFPercentage(6),
+                }}
+              />
+              <View style={{ marginLeft: RFPercentage(1.5) }}>
+                <Text
+                  style={{
+                    color: "#1E1E1E",
+                    fontFamily: FontFamily.bold,
+                    fontSize: RFPercentage(1.6),
+                  }}
+                >
+                  {item.title}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: RFPercentage(0.8),
+                    color: Colors.black,
+                    fontFamily: FontFamily.regular,
+                    fontSize: RFPercentage(1.6),
+                  }}
+                >
+                  {item.amount}
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                marginLeft: RFPercentage(1),
+                backgroundColor: item.bgcolor,
+                padding: RFPercentage(0.5),
+                paddingHorizontal: RFPercentage(1.2),
+                borderWidth: RFPercentage(0.16),
+                borderColor: item.textcolor,
+                borderRadius: RFPercentage(0.7),
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: item.textcolor,
+                  fontFamily: FontFamily.regular,
+                  fontSize: RFPercentage(1.4),
+                }}
+              >
+                {item.status}
+              </Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
 
       <Modal
         visible={isModalVisible}
         transparent={true}
-        animationType="slide"
+        animationType="none"
         onRequestClose={() => setIsModalVisible(false)}
       >
         <View
@@ -338,6 +754,98 @@ const Transactions: React.FC = () => {
           </View>
         </View>
       </Modal>
+
+      {/* render receipt stsus modal */}
+      <Modal
+        visible={isStatusModalVisible}
+        transparent={true}
+        animationType="none"
+        onRequestClose={() => setIsStatusModalVisible(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "white",
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              paddingVertical: RFPercentage(1),
+              paddingBottom: RFPercentage(5),
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginVertical: RFPercentage(1),
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#1C1C1C",
+                    fontFamily: FontFamily.bold,
+                    fontSize: RFPercentage(1.9),
+                  }}
+                >
+                  Transaction Details
+                </Text>
+              </View>
+
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                {selectedTransaction && (
+                  <View
+                    style={{
+                      marginRight: RFPercentage(1),
+                      backgroundColor: "#FFFBE6",
+                      padding: RFPercentage(0.5),
+                      paddingHorizontal: RFPercentage(1.2),
+                      borderWidth: RFPercentage(0.16),
+                      borderColor: "#874D00",
+                      borderRadius: RFPercentage(0.7),
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#874D00",
+                        fontFamily: FontFamily.regular,
+                        fontSize: RFPercentage(1.4),
+                      }}
+                    >
+                      {selectedTransaction.status}
+                    </Text>
+                  </View>
+                )}
+                <TouchableOpacity
+                  onPress={() => setIsStatusModalVisible(false)}
+                >
+                  <Entypo name="cross" size={28} color="#1C1C1C" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <AppLine />
+
+            {/* Render modal content based on selected transaction */}
+            {renderModalContent()}
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 };
@@ -350,17 +858,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
+  zoomButton: {
+    position: "absolute",
+    top: RFPercentage(1),
+    right: RFPercentage(1),
+    backgroundColor: Colors.black,
+    padding: RFPercentage(1),
+    borderRadius: RFPercentage(1),
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalImage: {
+    width: "90%",
+    height: "90%",
+  },
+
   loginbutton: {
-    paddingVertical: RFPercentage(1.5),
+    marginTop: RFPercentage(1),
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: RFPercentage(1),
-    backgroundColor: "#DFEEEC",
   },
   buttontext: {
     color: "#1C1C1C",
     fontSize: RFPercentage(1.8),
     fontFamily: FontFamily.regular,
+  },
+  modalTitle: {
+    color: "#1C1C1C",
+    fontFamily: FontFamily.bold,
+    fontSize: RFPercentage(1.6),
+    marginBottom: RFPercentage(1),
+  },
+  loginbuttonStatus: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: RFPercentage(2),
   },
 });

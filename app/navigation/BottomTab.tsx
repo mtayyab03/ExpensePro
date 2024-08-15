@@ -33,6 +33,7 @@ const EmptyScreen: React.FC = () => {
 };
 const BottomTab: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [user, setUser] = useState(false);
   const navigation = useNavigation();
 
   const selectPcard = [
@@ -77,7 +78,9 @@ const BottomTab: React.FC = () => {
     if (!result.cancelled) {
       const imageUri = result.assets[0].uri;
       console.log("Image URI:", imageUri);
-      navigation.navigate("ReceiptSubmit", { image: imageUri });
+      navigation.navigate(user ? "ReceiptSubmit" : "ReceiptSubmitLong", {
+        image: imageUri,
+      });
     }
     setmenuid(item.name);
     setIsModalVisible(false);
@@ -278,6 +281,19 @@ const BottomTab: React.FC = () => {
               alignItems: "center",
             }}
           >
+            <View
+              style={{
+                width: "90%",
+                alignItems: "flex-end",
+                justifyContent: "flex-end",
+                marginTop: RFPercentage(1.3),
+              }}
+            >
+              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                <Entypo name="cross" size={28} color="#1C1C1C" />
+              </TouchableOpacity>
+            </View>
+
             {selectPcard.map((item) => (
               <TouchableOpacity
                 key={item.id}
