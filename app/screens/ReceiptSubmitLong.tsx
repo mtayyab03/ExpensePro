@@ -221,6 +221,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
         }}
       >
         <TouchableOpacity
+          onPress={() => navigation.goBack()}
           style={{
             width: "48%",
             paddingVertical: RFPercentage(1.5),

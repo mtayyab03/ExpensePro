@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import {
   Text,
@@ -7,13 +7,15 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Animated,
+  Easing,
 } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { FontAwesome6, Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-
+import * as DocumentPicker from "expo-document-picker";
 //screens
 import Transactions from "../screens/Transactions";
 import Receipts from "../screens/Receipts";
@@ -33,9 +35,27 @@ const EmptyScreen: React.FC = () => {
 };
 const BottomTab: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
   const navigation = useNavigation();
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    if (isModalVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isModalVisible]);
   const selectPcard = [
     {
       id: 1,
@@ -56,32 +76,65 @@ const BottomTab: React.FC = () => {
     setIsModalVisible(true);
   };
 
+  // const handleSelection = async (item: any) => {
+  //   let result: any;
+  //   if (item.name === "Take Photo") {
+  //     result = await ImagePicker.launchCameraAsync({
+  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //       allowsEditing: true,
+  //       quality: 1,
+  //     });
+  //   } else if (
+  //     item.name === "Upload from Photos" ||
+  //     item.name === "Upload from Files"
+  //   ) {
+  //     result = await ImagePicker.launchImageLibraryAsync({
+  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //       allowsEditing: true,
+  //       quality: 1,
+  //     });
+  //   }
+
+  //   if (!result.cancelled) {
+  //     const imageUri = result.assets[0].uri;
+  //     console.log("Image URI:", imageUri);
+  //     navigation.navigate(user ? "ReceiptSubmit" : "ReceiptSubmitLong", {
+  //       image: imageUri,
+  //     });
+  //   }
+  //   setmenuid(item.name);
+  //   setIsModalVisible(false);
+  // };
   const handleSelection = async (item: any) => {
-    let result: any;
+    let result;
+
     if (item.name === "Take Photo") {
       result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         quality: 1,
       });
-    } else if (
-      item.name === "Upload from Photos" ||
-      item.name === "Upload from Files"
-    ) {
+    } else if (item.name === "Upload from Photos") {
       result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         quality: 1,
       });
-    }
-
-    if (!result.cancelled) {
-      const imageUri = result.assets[0].uri;
-      console.log("Image URI:", imageUri);
-      navigation.navigate(user ? "ReceiptSubmit" : "ReceiptSubmitLong", {
-        image: imageUri,
+    } else if (item.name === "Upload from Files") {
+      result = await DocumentPicker.getDocumentAsync({
+        type: "*/*", // Adjust the type as per your requirement
+        copyToCacheDirectory: true,
       });
     }
+
+    if (result && !result.cancelled) {
+      const fileUri = result.assets[0].uri;
+      console.log("File URI:", fileUri);
+      navigation.navigate(user ? "ReceiptSubmit" : "ReceiptSubmitLong", {
+        image: fileUri,
+      });
+    }
+
     setmenuid(item.name);
     setIsModalVisible(false);
   };
@@ -258,7 +311,7 @@ const BottomTab: React.FC = () => {
       <Modal
         visible={isModalVisible}
         transparent={true}
-        animationType="slide"
+        animationType="none"
         onRequestClose={() => setIsModalVisible(false)}
       >
         <View

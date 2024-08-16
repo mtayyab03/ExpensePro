@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -7,9 +7,12 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Animated,
+  Easing,
+  Modal,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Ionicons, Feather, Fontisto } from "@expo/vector-icons";
+import { MaterialIcons, Entypo, Feather, Fontisto } from "@expo/vector-icons";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -29,7 +32,46 @@ const Receipts: React.FC = () => {
   const filteredTransactions = submittedReceipts.filter((transaction) =>
     transaction.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    if (isModalVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isModalVisible]);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+  const selectPcard = [
+    {
+      id: 1,
+      name: "Sarah’s PCard",
+      status: "Company Name | Department",
+    },
+    {
+      id: 2,
+      name: "Steve’s PCard",
+      status: "Company Name | Department",
+    },
+  ];
+  const [menuid, setmenuid] = useState(selectPcard[0].name);
+  const handleIconPress = () => {
+    setIsModalVisible(true);
+  };
   return (
     <Screen style={styles.screen}>
       <Header />
@@ -43,7 +85,7 @@ const Receipts: React.FC = () => {
       >
         <Text
           style={{
-            color: Colors.blacktext,
+            color: "#1C1C1C",
             fontFamily: FontFamily.medium,
             fontSize: RFPercentage(1.6),
           }}
@@ -58,13 +100,15 @@ const Receipts: React.FC = () => {
             fontSize: RFPercentage(1.6),
           }}
         >
-          Sarah’s PCard
+          {menuid}
         </Text>
-        <MaterialIcons
-          name="keyboard-arrow-down"
-          size={24}
-          color={Colors.primary}
-        />
+        <TouchableOpacity activeOpacity={0.7} onPress={handleIconPress}>
+          <MaterialIcons
+            name="keyboard-arrow-down"
+            size={24}
+            color={Colors.primary}
+          />
+        </TouchableOpacity>
       </View>
 
       <AppLine />
@@ -140,6 +184,110 @@ const Receipts: React.FC = () => {
           <Receipt key={i} item={item} />
         ))}
       </ScrollView>
+
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="none"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
+          {/* Your modal content */}
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "white",
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              paddingVertical: RFPercentage(1),
+              paddingBottom: RFPercentage(5),
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: RFPercentage(1.3),
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "#1C1C1C",
+                    fontFamily: FontFamily.bold,
+                    fontSize: RFPercentage(1.9),
+                  }}
+                >
+                  PCard User
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+                <Entypo name="cross" size={28} color="#1C1C1C" />
+              </TouchableOpacity>
+            </View>
+
+            {/* button */}
+            <View style={{ marginTop: RFPercentage(1) }} />
+
+            {selectPcard.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => {
+                  setmenuid(item.name);
+                  setIsModalVisible(false);
+                }}
+                style={{
+                  paddingVertical: RFPercentage(1.5),
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: RFPercentage(1),
+                  backgroundColor: menuid === item.name ? "#DFEEEC" : undefined,
+                }}
+                activeOpacity={0.7}
+              >
+                <View style={{ width: "90%" }}>
+                  <Text
+                    style={{
+                      color: "#1C1C1C",
+                      fontFamily: FontFamily.bold,
+                      fontSize: RFPercentage(1.6),
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                  <View style={{ marginTop: RFPercentage(0.6) }}>
+                    <Text
+                      style={{
+                        color: "#1C1C1C",
+                        fontFamily: FontFamily.regular,
+                        fontSize: RFPercentage(1.6),
+                      }}
+                    >
+                      {item.status}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 };

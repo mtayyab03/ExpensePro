@@ -8,13 +8,13 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
-  Platform,
+  Alert,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { Feather, FontAwesome5, Entypo } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
-
+import { showMessage } from "react-native-flash-message";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -27,7 +27,7 @@ import AppLine from "../components/AppLine";
 import TitleField from "../components/TitleField";
 import AppButton from "../components/AppButton";
 
-const ReceiptSubmit = ({ route }: any) => {
+const ReceiptSubmit = ({ navigation, route }: any) => {
   const [supplier, setSupplier] = useState("MEDITERRANEAN CAFE");
   const [amount, setAmount] = useState("$ 62.16");
   const [date, setDate] = useState("03-06-2024");
@@ -92,9 +92,15 @@ const ReceiptSubmit = ({ route }: any) => {
 
   const handleSubmit = () => {
     if (validateFields()) {
+      navigation.navigate("BottomTab"); // Ensure this is the correct route name
+      showMessage({
+        message: "Success!",
+        description: "Receipt submitted successfully.",
+        type: "success",
+      });
       // Proceed with the submission process
     } else {
-      // Handle the case where validation fails
+      Alert.alert("Submit Receipt failed !");
     }
   };
   const [modalVisible, setModalVisible] = useState(false);
