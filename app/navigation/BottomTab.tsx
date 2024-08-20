@@ -164,7 +164,7 @@ const BottomTab: React.FC = () => {
                                             fontSize: RFPercentage(1),
                                             color: focused
                                                 ? Colors.green
-                                                : Colors.gray,
+                                                : Colors.darkgray,
                                         }}
                                     >
                                         Transcations
@@ -247,7 +247,7 @@ const BottomTab: React.FC = () => {
 
                                             color: focused
                                                 ? Colors.primary
-                                                : Colors.gray,
+                                                : Colors.darkgray,
                                         }}
                                     >
                                         Add Receipt
@@ -282,7 +282,7 @@ const BottomTab: React.FC = () => {
                                             fontSize: RFPercentage(1),
                                             color: focused
                                                 ? Colors.green
-                                                : Colors.gray,
+                                                : Colors.darkgray,
                                         }}
                                     >
                                         Receipts

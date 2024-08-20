@@ -11,7 +11,7 @@ export default {
     lightWhite: "#E5E5E5",
     white: "#FFFFFF",
     textcolor: "#656567",
-    darkgray: "##000000A6",
+    darkgray: "#000000A6",
     lightgray: "#00000005",
     placeholder: "#0D104080",
     ilightwhite: "#F7F7F7",
