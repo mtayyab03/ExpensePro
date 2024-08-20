@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -7,9 +7,12 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Animated,
+  Easing,
+  Modal,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Ionicons, Feather, Fontisto } from "@expo/vector-icons";
+import { MaterialIcons, Entypo, Feather, Fontisto } from "@expo/vector-icons";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -22,6 +25,7 @@ import AppLine from "../components/AppLine";
 import Alert from "../components/Alert";
 import Header from "../components/Header";
 import Receipt from "../components/Receipt";
+import PCardModal from "../components/PCardModal";
 
 const Receipts: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +33,46 @@ const Receipts: React.FC = () => {
   const filteredTransactions = submittedReceipts.filter((transaction) =>
     transaction.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    if (isModalVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isModalVisible]);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+  const selectPcard = [
+    {
+      id: 1,
+      name: "Sarah’s PCard",
+      status: "Company Name | Department",
+    },
+    {
+      id: 2,
+      name: "Steve’s PCard",
+      status: "Company Name | Department",
+    },
+  ];
+  const [menuid, setmenuid] = useState(selectPcard[0].name);
+  const handleIconPress = () => {
+    setIsModalVisible(true);
+  };
   return (
     <Screen style={styles.screen}>
       <Header />
@@ -43,7 +86,7 @@ const Receipts: React.FC = () => {
       >
         <Text
           style={{
-            color: Colors.blacktext,
+            color: "#1C1C1C",
             fontFamily: FontFamily.medium,
             fontSize: RFPercentage(1.6),
           }}
@@ -58,13 +101,15 @@ const Receipts: React.FC = () => {
             fontSize: RFPercentage(1.6),
           }}
         >
-          Sarah’s PCard
+          {menuid}
         </Text>
-        <MaterialIcons
-          name="keyboard-arrow-down"
-          size={24}
-          color={Colors.primary}
-        />
+        <TouchableOpacity activeOpacity={0.7} onPress={handleIconPress}>
+          <MaterialIcons
+            name="keyboard-arrow-down"
+            size={24}
+            color={Colors.primary}
+          />
+        </TouchableOpacity>
       </View>
 
       <AppLine />
@@ -140,6 +185,14 @@ const Receipts: React.FC = () => {
           <Receipt key={i} item={item} />
         ))}
       </ScrollView>
+
+      <PCardModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        selectPcard={selectPcard}
+        menuid={menuid}
+        setmenuid={setmenuid}
+      />
     </Screen>
   );
 };

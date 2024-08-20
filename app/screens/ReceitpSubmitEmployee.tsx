@@ -8,15 +8,25 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+  Platform,
   Alert,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { Feather, FontAwesome5, Entypo } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome5,
+  Entypo,
+  MaterialIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
+import { showMessage } from "react-native-flash-message";
+
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
+import icons from "../config/icons";
 
 // componnet
 import Screen from "../components/Screen";
@@ -24,8 +34,18 @@ import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import TitleField from "../components/TitleField";
 import AppButton from "../components/AppButton";
+const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
+  const { image: initialImage, selectedName } = route.params;
 
-const ReceiptSubmit = ({ navigation, route }: any) => {
+  console.log("Received image URI:", initialImage);
+  console.log("Selected category name:", selectedName);
+  const [isSelectedName, setisSelectedName] = useState(selectedName); // Example initial category
+  const [isCategoryVisible, setIsCategoryVisible] = useState(true); // Track visibility
+
+  const handleRemoveCategory = () => {
+    setIsCategoryVisible(false);
+    setisSelectedName(""); // Optionally clear the selected name
+  };
   const [supplier, setSupplier] = useState("MEDITERRANEAN CAFE");
   const [amount, setAmount] = useState("$ 62.16");
   const [date, setDate] = useState("03-06-2024");
@@ -39,6 +59,11 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
   });
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handlePress = () => {
+    setIsSelected((prev) => !prev);
+  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -59,7 +84,6 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
     setDate(formattedDate);
     setSelectedDate(selectedDate);
   };
-  const { image: initialImage } = route.params;
   const [image, setImage] = useState(initialImage);
   // const image = icons.picslip;
   const handleReplaceImage = async () => {
@@ -94,16 +118,17 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
         screen: "Transactions", // Navigate to the specific tab screen
         params: { showAlert: true },
       });
+      // Proceed with the submission process
     } else {
       Alert.alert("Please fill all Fields");
     }
   };
-
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
+
   return (
     <Screen style={styles.screen}>
       <Header />
@@ -120,6 +145,9 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
           style={{
             width: "90%",
             marginVertical: RFPercentage(1.3),
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
           <Text
@@ -131,6 +159,48 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
           >
             Add Receipt
           </Text>
+
+          <View>
+            <Text
+              style={{
+                color: Colors.blacktext,
+                fontFamily: FontFamily.regular,
+                fontSize: RFPercentage(1),
+                marginBottom: RFPercentage(0.5),
+              }}
+            >
+              Step 3 of 3
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={{
+                  width: RFPercentage(4),
+                  height: RFPercentage(0.8),
+                  backgroundColor: Colors.primary,
+                  borderRadius: RFPercentage(0.1),
+                }}
+              />
+              <View
+                style={{
+                  width: RFPercentage(4),
+                  marginLeft: RFPercentage(0.3),
+
+                  height: RFPercentage(0.8),
+                  backgroundColor: Colors.primary,
+                  borderRadius: RFPercentage(0.1),
+                }}
+              />
+              <View
+                style={{
+                  marginLeft: RFPercentage(0.3),
+                  width: RFPercentage(4),
+                  height: RFPercentage(0.8),
+                  backgroundColor: Colors.primary,
+                  borderRadius: RFPercentage(0.1),
+                }}
+              />
+            </View>
+          </View>
         </View>
         <AppLine />
 
@@ -374,53 +444,7 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
           )}
         </View>
 
-        {/* meal area */}
-        <View
-          style={{
-            width: "90%",
-            marginTop: RFPercentage(1),
-            borderWidth: RFPercentage(0.1),
-            borderRadius: RFPercentage(1),
-            borderColor: Colors.grey,
-            padding: RFPercentage(1.5),
-            alignItems: "center",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={{ width: "48%" }}>
-            <Text
-              style={{
-                fontSize: RFPercentage(1.5),
-                color: Colors.blacktext,
-                fontFamily: FontFamily.regular,
-              }}
-            >
-              Meal Attendance Count (if applicable)
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "30%",
-              backgroundColor: Colors.white,
-              borderWidth: RFPercentage(0.1),
-              borderColor: Colors.grey,
-              padding: RFPercentage(1.5),
-              alignItems: "center",
-              borderRadius: RFPercentage(1),
-              justifyContent: "flex-start",
-            }}
-          >
-            <TextInput
-              onChangeText={setMeal}
-              value={meal}
-              placeholder="#"
-              placeholderTextColor={Colors.placeholder}
-            />
-          </View>
-        </View>
-
+        {/* description */}
         <View style={{ width: "90%" }}>
           <View
             style={{
@@ -466,35 +490,213 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
           )}
         </View>
 
-        {/* buttons */}
         <TouchableOpacity
-          style={styles.loginbutton}
-          onPress={handleSubmit}
+          onPress={handlePress}
           activeOpacity={0.7}
-        >
-          <AppButton title="Submit Receipt" buttonColor={Colors.primary} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
           style={{
             width: "90%",
-            paddingVertical: RFPercentage(1.5),
+            borderWidth: RFPercentage(0.1),
             borderRadius: RFPercentage(1),
-            borderWidth: RFPercentage(0.15),
-            borderColor: Colors.grey,
+            borderColor: Colors.lightWhite,
+            padding: RFPercentage(1.5),
+            paddingVertical: RFPercentage(1.8),
             alignItems: "center",
-            justifyContent: "center",
+            flexDirection: "row",
+
+            marginVertical: RFPercentage(1),
           }}
-          activeOpacity={0.7}
         >
-          <Text style={styles.buttontext}>Cancel</Text>
+          <View
+            style={{
+              width: RFPercentage(2),
+              height: RFPercentage(2),
+              borderRadius: RFPercentage(0.3),
+              borderWidth: RFPercentage(0.1),
+              borderColor: Colors.grey,
+              backgroundColor: isSelected ? Colors.green : Colors.white,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {isSelected && (
+              <Entypo name="check" size={16} color={Colors.white} />
+            )}
+          </View>
+
+          <View style={{ marginLeft: RFPercentage(1.5) }}>
+            <Text
+              style={{
+                color: Colors.blacktext,
+                fontFamily: FontFamily.regular,
+                fontSize: RFPercentage(1.6),
+              }}
+            >
+              Tax charged on Receipt
+            </Text>
+          </View>
         </TouchableOpacity>
+
+        {/* meal area */}
+        <View
+          style={{
+            width: "90%",
+            backgroundColor: "#F5F5F5",
+            borderRadius: RFPercentage(1),
+            padding: RFPercentage(1.5),
+            marginTop: RFPercentage(1),
+            overflow: "hidden",
+          }}
+        >
+          {/* category */}
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: RFPercentage(1),
+            }}
+          >
+            <Text
+              style={{
+                fontSize: RFPercentage(1.5),
+                color: Colors.blacktext,
+                fontFamily: FontFamily.regular,
+              }}
+            >
+              Category(s)
+            </Text>
+
+            <MaterialIcons
+              name="arrow-forward-ios"
+              size={16}
+              color={Colors.blacktext}
+            />
+          </View>
+
+          {isCategoryVisible && (
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: RFPercentage(0.5),
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  borderWidth: RFPercentage(0.1),
+                  borderColor: Colors.grey,
+                  paddingHorizontal: RFPercentage(0.7),
+                  paddingVertical: RFPercentage(0.5),
+                  alignItems: "center",
+                  borderRadius: RFPercentage(0.5),
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: RFPercentage(1.3),
+                    color: Colors.blacktext,
+                    fontFamily: FontFamily.regular,
+                  }}
+                >
+                  {selectedName}
+                </Text>
+                <TouchableOpacity onPress={handleRemoveCategory}>
+                  <Entypo name="cross" size={16} color={Colors.blacktext} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          {/* category end */}
+
+          <View
+            style={{
+              width: "100%",
+              marginTop: RFPercentage(1),
+              borderWidth: RFPercentage(0.1),
+              borderRadius: RFPercentage(1),
+              borderColor: Colors.grey,
+              padding: RFPercentage(1.5),
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ width: "48%" }}>
+              <Text
+                style={{
+                  fontSize: RFPercentage(1.5),
+                  color: Colors.blacktext,
+                  fontFamily: FontFamily.regular,
+                }}
+              >
+                Meal Attendance Count (if applicable)
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                width: "30%",
+                backgroundColor: Colors.white,
+                borderWidth: RFPercentage(0.1),
+                borderColor: Colors.grey,
+                padding: RFPercentage(1.5),
+                alignItems: "center",
+                borderRadius: RFPercentage(1),
+                justifyContent: "flex-start",
+              }}
+            >
+              <TextInput
+                onChangeText={setMeal}
+                value={meal}
+                placeholder="#"
+                placeholderTextColor={Colors.placeholder}
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* buttons */}
+        <View
+          style={{
+            width: "90%",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            marginTop: RFPercentage(2),
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              width: "48%",
+              paddingVertical: RFPercentage(1.5),
+              borderRadius: RFPercentage(1),
+              borderWidth: RFPercentage(0.15),
+              borderColor: Colors.grey,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.buttontext}>Back</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.loginbutton}
+            onPress={handleSubmit}
+            activeOpacity={0.7}
+          >
+            <AppButton title="Submit Receipt" buttonColor={Colors.primary} />
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </Screen>
   );
 };
 
-export default ReceiptSubmit;
+export default ReceitpSubmitEmployee;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -521,8 +723,7 @@ const styles = StyleSheet.create({
     height: "90%",
   },
   loginbutton: {
-    paddingVertical: RFPercentage(1.5),
-    width: "100%",
+    width: "54%",
     alignItems: "center",
     justifyContent: "center",
   },
