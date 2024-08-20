@@ -1,92 +1,95 @@
 import React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import { PostedTransaction } from "../models/types";
+import StatusTag from "./StatusTag";
 
 interface TransactionProps {
     item: PostedTransaction; // Update the prop name and type
+    handleTransactionPress: (item: PostedTransaction) => void;
 }
 
-const Transaction: React.FC<TransactionProps> = ({ item }) => {
+const Transaction: React.FC<TransactionProps> = ({
+    item,
+    handleTransactionPress,
+}) => {
+    const truncateTitle = (title: string) => {
+        if (title.length > 15) {
+            return title.substring(0, 15) + "...";
+        }
+        return title;
+    };
+
     return (
-        <View
-            style={{
-                width: "90%",
-                flexDirection: "row",
-                backgroundColor: Colors.lightgray,
-                paddingVertical: RFPercentage(1.4),
-                paddingHorizontal: RFPercentage(1.9),
-                borderWidth: RFPercentage(0.17),
-                borderColor: "rgb(235, 235, 235)",
-                borderRadius: RFPercentage(1),
-                alignItems: "center",
-                marginVertical: RFPercentage(0.3),
-                justifyContent: "space-between",
-            }}
+        <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => handleTransactionPress(item)}
+            style={[
+                styles.shadow,
+                {
+                    backgroundColor: Colors.white,
+                    borderWidth: RFPercentage(0.17),
+                    borderColor: Colors.lightWhite,
+                    borderRadius: RFPercentage(1),
+                    padding: 0,
+                    marginVertical: RFPercentage(0.5),
+                    width: "90%",
+                },
+            ]}
         >
             <View
                 style={{
                     flexDirection: "row",
+                    backgroundColor: Colors.lightgray,
+                    paddingVertical: RFPercentage(1.4),
+                    paddingHorizontal: RFPercentage(1.9),
                     alignItems: "center",
+                    justifyContent: "space-between",
                 }}
             >
-                <Image
-                    source={item.trendimage}
-                    resizeMode='contain'
+                <View
                     style={{
-                        height: RFPercentage(6),
-                        width: RFPercentage(6),
-                    }}
-                />
-                <View style={{ marginLeft: RFPercentage(1.5) }}>
-                    <Text
-                        style={{
-                            color: "#1E1E1E",
-                            fontFamily: FontFamily.bold,
-                            fontSize: RFPercentage(1.6),
-                        }}
-                    >
-                        {item.title}
-                    </Text>
-                    <Text
-                        style={{
-                            marginTop: RFPercentage(.8),
-                            color: Colors.black,
-                            fontFamily: FontFamily.regular,
-                            fontSize: RFPercentage(1.6),
-                        }}
-                    >
-                        {item.amount}
-                    </Text>
-                </View>
-            </View>
-
-            <View
-                style={{
-                    marginLeft: RFPercentage(1),
-                    backgroundColor: item.bgcolor,
-                    padding: RFPercentage(0.5),
-                    paddingHorizontal: RFPercentage(1.2),
-                    borderWidth: RFPercentage(0.16),
-                    borderColor: item.textcolor,
-                    borderRadius: RFPercentage(0.7),
-                    alignItems: "center",
-                }}
-            >
-                <Text
-                    style={{
-                        color: item.textcolor,
-                        fontFamily: FontFamily.regular,
-                        fontSize: RFPercentage(1.4),
+                        flexDirection: "row",
+                        alignItems: "center",
+                        maxWidth: "60%",
                     }}
                 >
-                    {item.status}
-                </Text>
+                    <Image
+                        source={item.trendimage}
+                        resizeMode='contain'
+                        style={{
+                            height: RFPercentage(6),
+                            width: RFPercentage(6),
+                        }}
+                    />
+                    <View style={{ marginLeft: 8 }}>
+                        <Text
+                            style={{
+                                color: "#1E1E1E",
+                                fontFamily: FontFamily.bold,
+                                fontSize: RFPercentage(1.6),
+                            }}
+                        >
+                            {truncateTitle(item.title)}
+                        </Text>
+                        <Text
+                            style={{
+                                marginTop: RFPercentage(0.8),
+                                color: Colors.black,
+                                fontFamily: FontFamily.regular,
+                                fontSize: RFPercentage(1.6),
+                            }}
+                        >
+                            {item.amount}
+                        </Text>
+                    </View>
+                </View>
+                <StatusTag item={item} />
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 const styles = StyleSheet.create({
@@ -96,16 +99,15 @@ const styles = StyleSheet.create({
         fontFamily: FontFamily.regular,
     },
     shadow: {
-        shadowColor: "#000",
+        shadowColor: "#000000", // Ensure color is solid enough
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.03 + 0.02 + 0.02,
-        shadowRadius: 4,
-
-        // Elevation for Android
-        elevation: 3,
+        shadowOpacity: 0.05, // Adjust opacity if necessary
+        shadowRadius: 2,
+        // Shadow for Android
+        elevation: 5,
     },
 });
 export default Transaction;

@@ -23,8 +23,6 @@ export interface PostedTransaction {
     title: string;
     amount: string;
     status: string;
-    textcolor: string;
-    bgcolor: string;
 }
 
 export interface SubmittedReceipt {

@@ -1,95 +1,102 @@
 import React from "react";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import {
-  Text,
-  Platform,
-  Modal,
-  View,
-  StyleSheet,
-  TouchableOpacity,
+    Text,
+    Platform,
+    Modal,
+    View,
+    StyleSheet,
+    TouchableOpacity,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
 //config
 
 import { FontFamily } from "../config/font";
+import CloseIcon from "../../assets/svg/CloseIcon";
 
 const UploadModal = ({
-  isModalVisible,
-  setIsModalVisible,
-  selectPcard,
-  handleSelection,
-  menuid,
+    isModalVisible,
+    setIsModalVisible,
+    selectPcard,
+    handleSelection,
+    menuid,
 }: any) => {
-  return (
-    <Modal
-      visible={isModalVisible}
-      transparent={true}
-      animationType="none"
-      onRequestClose={() => setIsModalVisible(false)}
-    >
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-end",
-          alignItems: "center",
-          backgroundColor: "rgba(0,0,0,0.5)",
-        }}
-      >
-        {/* Your modal content */}
-        <View
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            paddingVertical: RFPercentage(1),
-            paddingBottom: RFPercentage(5),
-            alignItems: "center",
-          }}
+    return (
+        <Modal
+            visible={isModalVisible}
+            transparent={true}
+            animationType='none'
+            onRequestClose={() => setIsModalVisible(false)}
         >
-          <View
-            style={{
-              width: "90%",
-              alignItems: "flex-end",
-              justifyContent: "flex-end",
-              marginTop: RFPercentage(1.3),
-            }}
-          >
-            <TouchableOpacity onPress={() => setIsModalVisible(false)}>
-              <Entypo name="cross" size={28} color="#1C1C1C" />
-            </TouchableOpacity>
-          </View>
-
-          {selectPcard.map((item: any) => (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() => handleSelection(item)}
-              style={{
-                paddingVertical: RFPercentage(2),
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: RFPercentage(1),
-                backgroundColor: menuid === item.name ? "#DFEEEC" : undefined,
-              }}
-              activeOpacity={0.7}
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                }}
             >
-              <View style={{ width: "90%" }}>
-                <Text
-                  style={{
-                    color: "#1C1C1C",
-                    fontFamily: FontFamily.bold,
-                    fontSize: RFPercentage(1.6),
-                  }}
+                {/* Your modal content */}
+                <View
+                    style={{
+                        width: "100%",
+                        backgroundColor: "white",
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        paddingVertical: RFPercentage(1),
+                        paddingBottom: RFPercentage(5),
+                        alignItems: "center",
+                    }}
                 >
-                  {item.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                    <View
+                        style={{
+                            width: "90%",
+                            alignItems: "flex-end",
+                            justifyContent: "flex-end",
+                            marginTop: RFPercentage(1.3),
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => setIsModalVisible(false)}
+                            style={{ paddingRight: 12, marginBottom: 8 }}
+                        >
+                            <CloseIcon />
+                        </TouchableOpacity>
+                    </View>
 
-          {/* <View
+                    {selectPcard.map((item: any) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            onPress={() => handleSelection(item)}
+                            style={{
+                                paddingVertical: RFPercentage(2),
+                                width: "100%",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: RFPercentage(1),
+                                backgroundColor:
+                                    menuid === item.name
+                                        ? "#DFEEEC"
+                                        : undefined,
+                            }}
+                            activeOpacity={0.7}
+                        >
+                            <View style={{ width: "90%" }}>
+                                <Text
+                                    style={{
+                                        color: "#1C1C1C",
+                                        fontFamily: FontFamily.bold,
+                                        fontSize: RFPercentage(1.6),
+                                    }}
+                                >
+                                    {item.name}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
+
+                    {/* <View
                             style={{
                                 width: "90%",
                                 flexDirection: "row",
@@ -116,7 +123,7 @@ const UploadModal = ({
                                 <Text
                                     style={{
                                         marginHorizontal: RFPercentage(0.5),
-                                        color: Colors.grey,
+                                        color: Colors.gray,
                                         fontFamily: FontFamily.regular,
                                         fontSize: RFPercentage(1.7),
                                     }}
@@ -143,7 +150,7 @@ const UploadModal = ({
                             style={styles.loginbutton}
                             activeOpacity={0.7}
                          >
-                            <AppButton
+                            <PrimaryButton
                                 title='New Receipt'
                                 buttonColor={Colors.primary}
                             />
@@ -168,10 +175,10 @@ const UploadModal = ({
                                 </Text>
                             </View>
                          </TouchableOpacity> */}
-        </View>
-      </View>
-    </Modal>
-  );
+                </View>
+            </View>
+        </Modal>
+    );
 };
 
 export default UploadModal;
