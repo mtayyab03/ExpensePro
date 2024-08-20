@@ -14,6 +14,8 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { Feather, FontAwesome5, Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -24,16 +26,23 @@ import Screen from "../components/Screen";
 import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import AppButton from "../components/AppButton";
+
+// Define your navigation parameter types
 type RootStackParamList = {
-  ReceiptCategory: undefined; // If there are no parameters
-  ReceiptSubmit: { image: string }; // Example with a parameter
-  ReceiptSubmitLong: { image: string }; // Example with a parameter
-  // Add other routes here
+  ReceiptCategory: { image: any };
+  ReceitpSubmitEmployee: { selectedName: string; image: any };
 };
+
+// Define the type for your navigation prop
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ReceiptCategory"
+>;
+
 const ReceiptSubmitLong = ({ route }: any) => {
   const { image: initialImage } = route.params;
   const [image, setImage] = useState(initialImage);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   // const image = icons.picslip;
   const handleReplaceImage = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({

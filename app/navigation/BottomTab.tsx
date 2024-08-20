@@ -29,6 +29,17 @@ import { FontFamily } from "../config/font";
 import TransactionIcon from "../../assets/svg/TransactionIcon";
 import ReceiptIcon from "../../assets/svg/ReceiptIcon";
 
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import UploadModal from "../components/UploadModal";
+
+type RootStackParamList = {
+  ReceiptSubmit: { image: string };
+  ReceiptSubmitLong: { image: string };
+};
+
+// Define the type for your navigation prop
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 const Tab = createBottomTabNavigator();
 const EmptyScreen: React.FC = () => {
   return null;
@@ -36,7 +47,7 @@ const EmptyScreen: React.FC = () => {
 const BottomTab: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [user, setUser] = useState(true);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -76,35 +87,6 @@ const BottomTab: React.FC = () => {
     setIsModalVisible(true);
   };
 
-  // const handleSelection = async (item: any) => {
-  //   let result: any;
-  //   if (item.name === "Take Photo") {
-  //     result = await ImagePicker.launchCameraAsync({
-  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //       allowsEditing: true,
-  //       quality: 1,
-  //     });
-  //   } else if (
-  //     item.name === "Upload from Photos" ||
-  //     item.name === "Upload from Files"
-  //   ) {
-  //     result = await ImagePicker.launchImageLibraryAsync({
-  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //       allowsEditing: true,
-  //       quality: 1,
-  //     });
-  //   }
-
-  //   if (!result.cancelled) {
-  //     const imageUri = result.assets[0].uri;
-  //     console.log("Image URI:", imageUri);
-  //     navigation.navigate(user ? "ReceiptSubmit" : "ReceiptSubmitLong", {
-  //       image: imageUri,
-  //     });
-  //   }
-  //   setmenuid(item.name);
-  //   setIsModalVisible(false);
-  // };
   const handleSelection = async (item: any) => {
     let result;
 
@@ -127,7 +109,7 @@ const BottomTab: React.FC = () => {
       });
     }
 
-    if (result && !result.cancelled) {
+    if (result && !result.canceled) {
       const fileUri = result.assets[0].uri;
       console.log("File URI:", fileUri);
       navigation.navigate(user ? "ReceiptSubmit" : "ReceiptSubmitLong", {
@@ -308,155 +290,14 @@ const BottomTab: React.FC = () => {
           }}
         />
       </Tab.Navigator>
-      <Modal
-        visible={isModalVisible}
-        transparent={true}
-        animationType="none"
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            alignItems: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-        >
-          {/* Your modal content */}
-          <View
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              paddingVertical: RFPercentage(1),
-              paddingBottom: RFPercentage(5),
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: "90%",
-                alignItems: "flex-end",
-                justifyContent: "flex-end",
-                marginTop: RFPercentage(1.3),
-              }}
-            >
-              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
-                <Entypo name="cross" size={28} color="#1C1C1C" />
-              </TouchableOpacity>
-            </View>
 
-            {selectPcard.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                onPress={() => handleSelection(item)}
-                style={{
-                  paddingVertical: RFPercentage(2),
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: RFPercentage(1),
-                  backgroundColor: menuid === item.name ? "#DFEEEC" : undefined,
-                }}
-                activeOpacity={0.7}
-              >
-                <View style={{ width: "90%" }}>
-                  <Text
-                    style={{
-                      color: "#1C1C1C",
-                      fontFamily: FontFamily.bold,
-                      fontSize: RFPercentage(1.6),
-                    }}
-                  >
-                    {item.name}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-
-            {/* <View
-                            style={{
-                                width: "90%",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                marginVertical: RFPercentage(1.3),
-                            }}
-                        >
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        color: "#1C1C1C",
-                                        fontFamily: FontFamily.bold,
-                                        fontSize: RFPercentage(1.9),
-                                    }}
-                                >
-                                    Attach Receipt -
-                                </Text>
-                                <Text
-                                    style={{
-                                        marginHorizontal: RFPercentage(0.5),
-                                        color: Colors.grey,
-                                        fontFamily: FontFamily.regular,
-                                        fontSize: RFPercentage(1.7),
-                                    }}
-                                >
-                                    Amazon
-                                </Text>
-                            </View>
-                            <TouchableOpacity
-                                onPress={() => setIsModalVisible(false)}
-                            >
-                                <Entypo
-                                    name='cross'
-                                    size={28}
-                                    color='#1C1C1C'
-                                />
-                            </TouchableOpacity>
-                         </View>
- 
-                          <AppLine />
-
-                          
-                         <View style={{ marginTop: RFPercentage(1) }} />
-                         <TouchableOpacity
-                            style={styles.loginbutton}
-                            activeOpacity={0.7}
-                         >
-                            <AppButton
-                                title='New Receipt'
-                                buttonColor={Colors.primary}
-                            />
-                         </TouchableOpacity>
-                         <TouchableOpacity
-                            style={styles.loginbutton}
-                            activeOpacity={0.7}
-                         >
-                            <View
-                                style={{
-                                    width: "90%",
-                                    paddingVertical: RFPercentage(1.5),
-                                    borderRadius: RFPercentage(1),
-                                    borderWidth: RFPercentage(0.15),
-                                    borderColor: "#B7B7B7",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Text style={styles.buttontext}>
-                                    Previously Submitted Receipt
-                                </Text>
-                            </View>
-                         </TouchableOpacity> */}
-          </View>
-        </View>
-      </Modal>
+      <UploadModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        selectPcard={selectPcard}
+        handleSelection={handleSelection}
+        menuid={menuid}
+      />
     </>
   );
 };

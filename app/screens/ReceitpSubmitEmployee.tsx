@@ -114,15 +114,13 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
 
   const handleSubmit = () => {
     if (validateFields()) {
-      navigation.navigate("BottomTab"); // Ensure this is the correct route name
-      showMessage({
-        message: "Success!",
-        description: "Receipt submitted successfully.",
-        type: "success",
+      navigation.navigate("BottomTab", {
+        screen: "Transactions", // Navigate to the specific tab screen
+        params: { showAlert: true },
       });
       // Proceed with the submission process
     } else {
-      Alert.alert("Submit Receipt failed !");
+      Alert.alert("Please fill all Fields");
     }
   };
   const [modalVisible, setModalVisible] = useState(false);

@@ -14,11 +14,9 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { Feather, FontAwesome5, Entypo } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
-import { showMessage } from "react-native-flash-message";
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
-import icons from "../config/icons";
 
 // componnet
 import Screen from "../components/Screen";
@@ -92,17 +90,15 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
 
   const handleSubmit = () => {
     if (validateFields()) {
-      navigation.navigate("BottomTab"); // Ensure this is the correct route name
-      showMessage({
-        message: "Success!",
-        description: "Receipt submitted successfully.",
-        type: "success",
+      navigation.navigate("BottomTab", {
+        screen: "Transactions", // Navigate to the specific tab screen
+        params: { showAlert: true },
       });
-      // Proceed with the submission process
     } else {
-      Alert.alert("Submit Receipt failed !");
+      Alert.alert("Please fill all Fields");
     }
   };
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -479,6 +475,7 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
           <AppButton title="Submit Receipt" buttonColor={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => navigation.goBack()}
           style={{
             width: "90%",
             paddingVertical: RFPercentage(1.5),

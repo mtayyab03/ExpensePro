@@ -19,6 +19,7 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 //config
 import Colors from "../config/Colors";
@@ -30,12 +31,27 @@ import Screen from "../components/Screen";
 import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import AppButton from "../components/AppButton";
+
+// Define the parameter types for your stack navigator
+type RootStackParamList = {
+  ReceiptCategory: { image: any };
+  ReceitpSubmitEmployee: { selectedName: string; image: any };
+};
+
+// Define the navigation prop type
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ReceiptCategory"
+>;
+
+// Define the route prop type
+
 const ReceiptCategory = ({ route }: any) => {
   const { image } = route.params;
   const [menuid, setmenuid] = useState("");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
 
   const handlePress = (i: number, name: string) => {
     setSelectedIndex(i);

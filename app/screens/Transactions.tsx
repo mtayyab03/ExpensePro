@@ -14,11 +14,17 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import FlashMessage from "react-native-flash-message";
 import * as ImagePicker from "expo-image-picker";
+import CustomAlert from "../components/CustomAlert";
 
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import icons from "../config/icons";
+import { useRoute, useNavigation } from "@react-navigation/native";
+
+// modals
+import PCardModal from "../components/PCardModal";
+import StatusModal from "../components/StatusModal";
 
 // componnet
 import Screen from "../components/Screen";
@@ -26,13 +32,32 @@ import AppButton from "../components/AppButton";
 import AppLine from "../components/AppLine";
 import Alert from "../components/Alert";
 import Header from "../components/Header";
-import Transaction from "../components/Transaction";
-import SidedText from "../components/SidedText";
 
 // models
 // import postedTransactions from "../models/postedTransactions";
+import { RouteProp } from "@react-navigation/native";
 
+// Define the type for route params
+type RootStackParamList = {
+  Transactions: { showAlert?: boolean }; // Add other params as needed
+};
+
+// Define a type for your route prop
+type TransactionsRouteProp = RouteProp<RootStackParamList, "Transactions">;
 const Transactions: React.FC = () => {
+  const route = useRoute<TransactionsRouteProp>();
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.showAlert) {
+      setAlertVisible(true);
+    }
+  }, [route.params]);
+
+  const handleCloseAlert = () => {
+    setAlertVisible(false);
+    // You can perform any other actions needed after the alert closes
+  };
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -186,285 +211,7 @@ const Transactions: React.FC = () => {
       setIsStatusModalVisible(false);
     }
   };
-  const renderModalContent = () => {
-    if (!selectedTransaction) return null;
 
-    const { status, title, amount, trendimage: image } = selectedTransaction;
-
-    if (status === "Missing Receipt") {
-      return (
-        <View
-          style={{
-            width: "100%",
-            overflow: "hidden",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              width: "90%",
-              backgroundColor: "#F5F5F5",
-              borderRadius: RFPercentage(1),
-              padding: RFPercentage(1.5),
-              marginVertical: RFPercentage(1),
-              overflow: "hidden",
-            }}
-          >
-            <Text style={styles.modalTitle}>Transaction Details</Text>
-
-            <SidedText name="Supplier" title={title} />
-            <SidedText name="Total" title={amount} />
-            <SidedText name="Transaction date" title="06-03-2024" />
-          </View>
-          <AppLine />
-
-          <TouchableOpacity
-            onPress={handleReplaceImage}
-            style={styles.loginbuttonStatus}
-            activeOpacity={0.7}
-          >
-            <AppButton title="Attch Receipt" buttonColor={Colors.primary} />
-          </TouchableOpacity>
-        </View>
-      );
-    } else if (status === "Pending") {
-      return (
-        <>
-          {/* image replace */}
-          {/* image replace */}
-          <View
-            style={{
-              width: "90%",
-              borderRadius: RFPercentage(1),
-              backgroundColor: Colors.grey,
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              marginTop: RFPercentage(1),
-            }}
-          >
-            {image && (
-              <>
-                <Image
-                  source={image}
-                  // source={image}
-                  style={{
-                    width: "100%",
-                    height: RFPercentage(16),
-                    backgroundColor: Colors.black,
-                  }}
-                />
-                <TouchableOpacity
-                  style={styles.zoomButton}
-                  onPress={toggleModal}
-                  activeOpacity={0.7}
-                >
-                  <FontAwesome5
-                    name="search-plus"
-                    size={20}
-                    color={Colors.white}
-                  />
-                </TouchableOpacity>
-                <Modal visible={modalVisible} transparent={true}>
-                  <TouchableOpacity
-                    style={styles.modalContainer}
-                    onPress={toggleModal}
-                  >
-                    <Image
-                      source={image}
-                      style={styles.modalImage}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </Modal>
-              </>
-            )}
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={handleReplaceImage}
-              style={{
-                width: "100%",
-                backgroundColor: Colors.ilightwhite,
-                alignItems: "center",
-                justifyContent: "center",
-                paddingVertical: RFPercentage(2),
-                flexDirection: "row",
-                borderWidth: RFPercentage(0.1),
-                borderColor: Colors.lightWhite,
-              }}
-            >
-              <FontAwesome5
-                name="exchange-alt"
-                size={20}
-                color={Colors.primary}
-              />
-              <Text
-                style={{
-                  marginLeft: RFPercentage(1),
-                  color: Colors.blacktext,
-                  fontFamily: FontFamily.regular,
-                  fontSize: RFPercentage(1.7),
-                }}
-              >
-                Replace
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              width: "100%",
-              overflow: "hidden",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: "90%",
-                backgroundColor: "#F5F5F5",
-                borderRadius: RFPercentage(1),
-                padding: RFPercentage(1.5),
-                marginVertical: RFPercentage(1),
-                overflow: "hidden",
-              }}
-            >
-              <Text style={styles.modalTitle}>Transaction Details</Text>
-
-              <SidedText name="Supplier" title={title} />
-              <SidedText name="Total" title={amount} />
-              <SidedText name="Transaction date" title="06-03-2024" />
-              <View style={{ marginTop: RFPercentage(0.5) }} />
-              <AppLine />
-              <View style={{ marginBottom: RFPercentage(0.5) }} />
-
-              <SidedText name="Expense Category" title="Travel" />
-              <SidedText
-                name="Short Description
-                of Purchase"
-                title="Ride to Airport"
-              />
-            </View>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => setIsStatusModalVisible(false)}
-            style={styles.loginbutton}
-            activeOpacity={0.7}
-          >
-            <AppButton title="Edit" buttonColor={Colors.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.loginbutton}
-            onPress={() => setIsStatusModalVisible(false)}
-            activeOpacity={0.7}
-          >
-            <View
-              style={{
-                width: "90%",
-                paddingVertical: RFPercentage(1.5),
-                borderRadius: RFPercentage(1),
-                borderWidth: RFPercentage(0.15),
-                borderColor: "#B7B7B7",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text style={styles.buttontext}>Cancel</Text>
-            </View>
-          </TouchableOpacity>
-        </>
-      );
-    } else if (status === "Complete") {
-      return (
-        <>
-          {/* image replace */}
-          <View
-            style={{
-              width: "90%",
-              borderRadius: RFPercentage(1),
-              backgroundColor: Colors.grey,
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              marginTop: RFPercentage(1),
-            }}
-          >
-            {image && (
-              <>
-                <Image
-                  source={image}
-                  // source={image}
-                  style={{
-                    width: "100%",
-                    height: RFPercentage(16),
-                  }}
-                />
-                <TouchableOpacity
-                  style={styles.zoomButton}
-                  onPress={toggleModal}
-                  activeOpacity={0.7}
-                >
-                  <FontAwesome5
-                    name="search-plus"
-                    size={20}
-                    color={Colors.white}
-                  />
-                </TouchableOpacity>
-                <Modal visible={modalVisible} transparent={true}>
-                  <TouchableOpacity
-                    style={styles.modalContainer}
-                    onPress={toggleModal}
-                  >
-                    <Image
-                      source={image}
-                      style={styles.modalImage}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </Modal>
-              </>
-            )}
-          </View>
-
-          <View
-            style={{
-              width: "100%",
-              overflow: "hidden",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: "90%",
-                backgroundColor: "#F5F5F5",
-                borderRadius: RFPercentage(1),
-                padding: RFPercentage(1.5),
-                marginVertical: RFPercentage(1),
-                overflow: "hidden",
-              }}
-            >
-              <Text style={styles.modalTitle}>Transaction Details</Text>
-
-              <SidedText name="Supplier" title={title} />
-              <SidedText name="Total" title={amount} />
-              <SidedText name="Transaction date" title="06-03-2024" />
-              <View style={{ marginTop: RFPercentage(0.5) }} />
-              <AppLine />
-              <View style={{ marginBottom: RFPercentage(0.5) }} />
-
-              <SidedText name="Expense Category" title="Travel" />
-              <SidedText
-                name="Short Description
-of Purchase"
-                title="Ride to Airport"
-              />
-            </View>
-          </View>
-        </>
-      );
-    }
-  };
   return (
     <Screen style={styles.screen}>
       <FlashMessage position="top" />
@@ -651,201 +398,28 @@ of Purchase"
         ))}
       </ScrollView>
 
-      <Modal
-        visible={isModalVisible}
-        transparent={true}
-        animationType="none"
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            alignItems: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-        >
-          {/* Your modal content */}
-          <View
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              paddingVertical: RFPercentage(1),
-              paddingBottom: RFPercentage(5),
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: "90%",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: RFPercentage(1.3),
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#1C1C1C",
-                    fontFamily: FontFamily.bold,
-                    fontSize: RFPercentage(1.9),
-                  }}
-                >
-                  PCard User
-                </Text>
-              </View>
-              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
-                <Entypo name="cross" size={28} color="#1C1C1C" />
-              </TouchableOpacity>
-            </View>
+      <PCardModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        selectPcard={selectPcard}
+        menuid={menuid}
+        setmenuid={setmenuid}
+      />
 
-            {/* button */}
-            <View style={{ marginTop: RFPercentage(1) }} />
+      <StatusModal
+        isStatusModalVisible={isStatusModalVisible}
+        setIsStatusModalVisible={setIsStatusModalVisible}
+        selectedTransaction={selectedTransaction}
+        handleReplaceImage={handleReplaceImage}
+        toggleModal={toggleModal}
+        modalVisible={modalVisible}
+      />
 
-            {selectPcard.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                onPress={() => {
-                  setmenuid(item.name);
-                  setIsModalVisible(false);
-                }}
-                style={{
-                  paddingVertical: RFPercentage(1.5),
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: RFPercentage(1),
-                  backgroundColor: menuid === item.name ? "#DFEEEC" : undefined,
-                }}
-                activeOpacity={0.7}
-              >
-                <View style={{ width: "90%" }}>
-                  <Text
-                    style={{
-                      color: "#1C1C1C",
-                      fontFamily: FontFamily.bold,
-                      fontSize: RFPercentage(1.6),
-                    }}
-                  >
-                    {item.name}
-                  </Text>
-                  <View style={{ marginTop: RFPercentage(0.6) }}>
-                    <Text
-                      style={{
-                        color: "#1C1C1C",
-                        fontFamily: FontFamily.regular,
-                        fontSize: RFPercentage(1.6),
-                      }}
-                    >
-                      {item.status}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </Modal>
-
-      {/* render receipt stsus modal */}
-      <Modal
-        visible={isStatusModalVisible}
-        transparent={true}
-        animationType="none"
-        onRequestClose={() => setIsStatusModalVisible(false)}
-      >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            alignItems: "center",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-        >
-          <View
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              paddingVertical: RFPercentage(1),
-              paddingBottom: RFPercentage(5),
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                width: "90%",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginVertical: RFPercentage(1),
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#1C1C1C",
-                    fontFamily: FontFamily.bold,
-                    fontSize: RFPercentage(1.9),
-                  }}
-                >
-                  Transaction Details
-                </Text>
-              </View>
-
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                {selectedTransaction && (
-                  <View
-                    style={{
-                      marginRight: RFPercentage(1),
-                      backgroundColor: "#FFFBE6",
-                      padding: RFPercentage(0.5),
-                      paddingHorizontal: RFPercentage(1.2),
-                      borderWidth: RFPercentage(0.16),
-                      borderColor: "#874D00",
-                      borderRadius: RFPercentage(0.7),
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "#874D00",
-                        fontFamily: FontFamily.regular,
-                        fontSize: RFPercentage(1.4),
-                      }}
-                    >
-                      {selectedTransaction.status}
-                    </Text>
-                  </View>
-                )}
-                <TouchableOpacity
-                  onPress={() => setIsStatusModalVisible(false)}
-                >
-                  <Entypo name="cross" size={28} color="#1C1C1C" />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <AppLine />
-
-            {/* Render modal content based on selected transaction */}
-            {renderModalContent()}
-          </View>
-        </View>
-      </Modal>
+      <CustomAlert
+        visible={alertVisible}
+        message="Receipt submitted successfully"
+        onClose={handleCloseAlert}
+      />
     </Screen>
   );
 };
