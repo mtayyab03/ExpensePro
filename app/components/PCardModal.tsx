@@ -101,7 +101,7 @@ const CustomModal = ({
                                 setIsModalVisible(false);
                             }}
                             style={{
-                                paddingVertical: RFPercentage(1.5),
+                                paddingVertical: RFPercentage(1.6),
                                 width: "100%",
                                 alignItems: "center",
                                 justifyContent: "center",

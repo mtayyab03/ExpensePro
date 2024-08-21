@@ -25,7 +25,7 @@ const TitleField = ({
                 <Text
                     style={{
                         marginVertical: RFPercentage(1),
-                        fontSize: RFPercentage(1.5),
+                        fontSize: RFPercentage(1.6),
                         color: Colors.blacktext,
                         fontFamily: FontFamily.regular,
                     }}
@@ -43,7 +43,7 @@ const TitleField = ({
                 <TextInput
                     style={{
                         width: RFPercentage(45),
-                        fontSize: RFPercentage(1.5),
+                        fontSize: RFPercentage(1.6),
                     }}
                     onChangeText={onChangeText}
                     value={value}
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     errorText: {
         color: Colors.red,
-        fontSize: RFPercentage(1.5),
+        fontSize: RFPercentage(1.6),
         marginTop: RFPercentage(0.5),
     },
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         borderColor: "#B7B7B7",
         backgroundColor: Colors.white,
         justifyContent: "center",
-        padding: RFPercentage(1.5),
+        padding: RFPercentage(1.6),
     },
 });
 

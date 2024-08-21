@@ -53,7 +53,7 @@ const StatusModal = ({
                             width: "90%",
                             backgroundColor: "#F5F5F5",
                             borderRadius: RFPercentage(1),
-                            padding: RFPercentage(1.5),
+                            padding: RFPercentage(1.4),
                             marginVertical: RFPercentage(1.9),
                             overflow: "hidden",
                         }}
@@ -141,7 +141,7 @@ const StatusModal = ({
                             onPress={handleReplaceImage}
                             style={{
                                 width: "100%",
-                                backgroundColor: Colors.ilightwhite,
+                                backgroundColor: Colors.lightwhite,
                                 alignItems: "center",
                                 justifyContent: "center",
                                 paddingVertical: RFPercentage(2),
@@ -173,7 +173,7 @@ const StatusModal = ({
                             width: "100%",
                             overflow: "hidden",
                             alignItems: "center",
-                            marginBottom: 8,
+                            marginVertical: RFPercentage(.9),
                         }}
                     >
                         <View
@@ -181,7 +181,7 @@ const StatusModal = ({
                                 width: "90%",
                                 backgroundColor: "#F5F5F5",
                                 borderRadius: RFPercentage(1),
-                                padding: RFPercentage(1.5),
+                                padding: RFPercentage(1.4),
                                 marginVertical: RFPercentage(1),
                                 overflow: "hidden",
                             }}
@@ -229,7 +229,7 @@ const StatusModal = ({
                         <View
                             style={{
                                 width: "90%",
-                                paddingVertical: RFPercentage(1.5),
+                                paddingVertical: RFPercentage(1.4),
                                 borderRadius: RFPercentage(1),
                                 borderWidth: RFPercentage(0.15),
                                 borderColor: "#B7B7B7",
@@ -302,6 +302,7 @@ const StatusModal = ({
                             width: "100%",
                             overflow: "hidden",
                             alignItems: "center",
+                            marginVertical: RFPercentage(.9),
                         }}
                     >
                         <View
@@ -309,7 +310,7 @@ const StatusModal = ({
                                 width: "90%",
                                 backgroundColor: "#F5F5F5",
                                 borderRadius: RFPercentage(1),
-                                padding: RFPercentage(1.5),
+                                padding: RFPercentage(1.4),
                                 marginVertical: RFPercentage(1),
                                 overflow: "hidden",
                             }}

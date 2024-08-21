@@ -164,7 +164,7 @@ const ReceiptCategory = ({ route }: any) => {
                             style={{
                                 width: RFPercentage(4),
                                 height: RFPercentage(0.8),
-                                backgroundColor: Colors.primary,
+                                backgroundColor: Colors.progress,
                                 borderRadius: RFPercentage(0.1),
                             }}
                         />
@@ -174,7 +174,7 @@ const ReceiptCategory = ({ route }: any) => {
                                 marginLeft: RFPercentage(0.3),
 
                                 height: RFPercentage(0.8),
-                                backgroundColor: Colors.primary,
+                                backgroundColor: Colors.progress,
                                 borderRadius: RFPercentage(0.1),
                             }}
                         />
@@ -196,7 +196,7 @@ const ReceiptCategory = ({ route }: any) => {
             <View
                 style={{
                     width: "90%",
-                    marginVertical: RFPercentage(1.5),
+                    marginVertical: RFPercentage(1.6),
                 }}
             >
                 <View
@@ -208,21 +208,10 @@ const ReceiptCategory = ({ route }: any) => {
                         style={{
                             color: Colors.blacktext,
                             fontFamily: FontFamily.bold,
-                            fontSize: RFPercentage(1.7),
+                            fontSize: RFPercentage(1.9),
                         }}
                     >
                         Select Expense Category
-                    </Text>
-                    <Text
-                        style={{
-                            marginTop: RFPercentage(0.5),
-                            color: Colors.gray,
-                            fontFamily: FontFamily.regular,
-                            fontSize: RFPercentage(1.5),
-                        }}
-                    >
-                        Select all that apply. Categories selected assist admins
-                        with assigning codes.
                     </Text>
                 </View>
             </View>
@@ -239,93 +228,117 @@ const ReceiptCategory = ({ route }: any) => {
                 style={{ width: "100%" }}
             >
                 {selectCategory.map((item: any, i: number) => (
-                    <TouchableOpacity
-                        onPress={() => handlePress(i, item.name)}
-                        activeOpacity={0.7}
-                        key={i}
+                    <View
                         style={{
-                            width: "90%",
                             borderWidth: RFPercentage(0.1),
                             borderRadius: RFPercentage(1),
+                            width: "90%",
                             borderColor:
                                 selectedIndex === i
                                     ? Colors.primary
                                     : Colors.lightWhite,
-                            padding: RFPercentage(1.5),
-                            paddingVertical: RFPercentage(1.8),
-                            alignItems: "center",
-                            flexDirection: "row",
-                            backgroundColor:
-                                selectedIndex === i
-                                    ? "#DFEEEC"
-                                    : Colors.ilightwhite,
-                            marginVertical: RFPercentage(0.5),
+                            backgroundColor: Colors.white,
+                            marginVertical: RFPercentage(0.9),
+                            shadowColor: "#000000", // Ensure color is solid enough
+                            shadowOffset: {
+                                width: 0,
+                                height: 2,
+                            },
+                            shadowOpacity: 0.03, // Adjust opacity if necessary
+                            shadowRadius: 1,
+                            // Shadow for Android
+                            elevation: 5,
                         }}
                     >
-                        <View
+                        <TouchableOpacity
+                            onPress={() => handlePress(i, item.name)}
+                            activeOpacity={0.7}
+                            key={i}
                             style={{
-                                width: RFPercentage(2),
-                                height: RFPercentage(2),
-                                borderWidth: RFPercentage(0.15),
-                                borderRadius: RFPercentage(0.4),
-                                borderColor: Colors.gray,
+                                borderRadius: RFPercentage(1),
+                                paddingHorizontal: RFPercentage(1.9),
+                                paddingVertical: RFPercentage(1.2),
+                                alignItems: "center",
+                                flexDirection: "row",
                                 backgroundColor:
                                     selectedIndex === i
-                                        ? Colors.green
-                                        : Colors.white,
-                                alignItems: "center",
-                                justifyContent: "center",
+                                        ? "#DFEEEC"
+                                        : Colors.lightgray,
                             }}
                         >
-                            {selectedIndex === i && (
-                                <View
-                                    style={{
-                                        backgroundColor: Colors.green,
-                                        borderRadius: RFPercentage(0.2),
-                                    }}
-                                >
-                                    <Entypo
-                                        name='check'
-                                        size={16}
-                                        color={Colors.white}
-                                    />
-                                </View>
-                            )}
-                        </View>
-                        <Image
-                            source={item.icon}
-                            // source={image}
-                            style={{
-                                width: RFPercentage(4),
-                                height: RFPercentage(4),
-                                marginLeft: RFPercentage(1.5),
-                            }}
-                        />
-                        <View style={{ marginLeft: RFPercentage(1.5) }}>
-                            <Text
+                            <View
                                 style={{
-                                    color: Colors.blacktext,
-                                    fontFamily: FontFamily.regular,
-                                    fontSize: RFPercentage(1.6),
+                                    width: RFPercentage(2),
+                                    height: RFPercentage(2),
+                                    borderWidth: RFPercentage(0.15),
+                                    borderRadius: RFPercentage(0.4),
+                                    borderColor: Colors.gray,
+                                    backgroundColor:
+                                        selectedIndex === i
+                                            ? Colors.green
+                                            : Colors.white,
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                 }}
                             >
-                                {item.name}
-                            </Text>
-
-                            <View style={{ width: RFPercentage(30) }}>
+                                {selectedIndex === i && (
+                                    <View
+                                        style={{
+                                            backgroundColor: Colors.green,
+                                            borderRadius: RFPercentage(0.2),
+                                        }}
+                                    >
+                                        <Entypo
+                                            name='check'
+                                            size={16}
+                                            color={Colors.white}
+                                        />
+                                    </View>
+                                )}
+                            </View>
+                            <View
+                                style={{
+                                    backgroundColor: Colors.white,
+                                    borderRadius: RFPercentage(0.5),
+                                    padding: RFPercentage(0.9),
+                                    marginLeft: RFPercentage(1.6),
+                                }}
+                            >
+                                <Image
+                                    source={item.icon}
+                                    // source={image}
+                                    style={{
+                                        width: RFPercentage(4),
+                                        height: RFPercentage(4),
+                                    }}
+                                />
+                            </View>
+                            <View style={{ marginLeft: RFPercentage(1.6) }}>
                                 <Text
                                     style={{
-                                        marginTop: RFPercentage(0.5),
-                                        color: Colors.gray,
+                                        color: Colors.blacktext,
                                         fontFamily: FontFamily.regular,
-                                        fontSize: RFPercentage(1.4),
+                                        fontSize: RFPercentage(1.6),
                                     }}
                                 >
-                                    {item.status}
+                                    {item.name}
                                 </Text>
+
+                                <View style={{ width: RFPercentage(26) }}>
+                                    <Text
+                                        style={{
+                                            marginTop: RFPercentage(0.5),
+                                            color: Colors.gray,
+                                            fontFamily: FontFamily.regular,
+                                            fontSize: RFPercentage(1.4),
+                                        }}
+                                    >
+                                        {item.status}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
                 ))}
             </ScrollView>
 
@@ -336,15 +349,16 @@ const ReceiptCategory = ({ route }: any) => {
                     flexDirection: "row",
                     alignItems: "center",
                     position: "absolute",
-                    bottom: RFPercentage(5),
+                    bottom: RFPercentage(3.5),
                     backgroundColor: Colors.white,
+                    paddingVertical: RFPercentage(1.9),
                 }}
             >
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     style={{
                         width: "48%",
-                        paddingVertical: RFPercentage(1.5),
+                        paddingVertical: RFPercentage(1.6),
                         borderRadius: RFPercentage(1),
                         borderWidth: RFPercentage(0.15),
                         borderColor: Colors.gray,
@@ -384,7 +398,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     loginbutton: {
-        paddingVertical: RFPercentage(1.5),
+        paddingVertical: RFPercentage(1.6),
         width: "55%",
         alignItems: "center",
         justifyContent: "center",

@@ -298,7 +298,7 @@ const Transactions: React.FC = () => {
             </View>
 
             {/* card */}
-            <View style={{ marginTop: RFPercentage(1.5) }} />
+            <View style={{ marginTop: RFPercentage(1.6) }} />
             <ScrollView
                 contentContainerStyle={{
                     alignItems: "center",
@@ -308,95 +308,8 @@ const Transactions: React.FC = () => {
                 style={{ width: "100%" }}
             >
                 {transactionSlip.map((item, i) => (
-                    // <TouchableOpacity
-                    //   activeOpacity={0.7}
-                    //   key={i}
-                    //   onPress={() => handleTransactionPress(item)}
-                    //   style={{
-                    //     width: "90%",
-                    //     flexDirection: "row",
-                    //     backgroundColor: Colors.white,
-                    //     paddingVertical: RFPercentage(1.4),
-                    //     paddingHorizontal: RFPercentage(1.9),
-                    //     borderWidth: RFPercentage(0.17),
-                    //     borderColor: Colors.lightWhite,
-                    //     borderRadius: RFPercentage(1),
-                    //     alignItems: "center",
-                    //     marginVertical: RFPercentage(0.3),
-                    //     justifyContent: "space-between",
-                    //     // Shadow for iOS
-                    //     shadowColor: "#000000", // Ensure color is solid enough
-                    //     shadowOffset: {
-                    //       width: 0,
-                    //       height: 2,
-                    //     },
-                    //     shadowOpacity: 0.2, // Adjust opacity if necessary
-                    //     shadowRadius: 2.84,
-                    //     // Shadow for Android
-                    //     elevation: 5,
-                    //   }}
-                    // >
-                    //   <View
-                    //     style={{
-                    //       flexDirection: "row",
-                    //       alignItems: "center",
-                    //     }}
-                    //   >
-                    //     <Image
-                    //       source={item.trendimage}
-                    //       resizeMode="contain"
-                    //       style={{
-                    //         height: RFPercentage(6),
-                    //         width: RFPercentage(6),
-                    //       }}
-                    //     />
-                    //     <View style={{ marginLeft: RFPercentage(1.5) }}>
-                    //       <Text
-                    //         style={{
-                    //           color: "#1E1E1E",
-                    //           fontFamily: FontFamily.bold,
-                    //           fontSize: RFPercentage(1.6),
-                    //         }}
-                    //       >
-                    //         {item.title}
-                    //       </Text>
-                    //       <Text
-                    //         style={{
-                    //           marginTop: RFPercentage(0.8),
-                    //           color: Colors.black,
-                    //           fontFamily: FontFamily.regular,
-                    //           fontSize: RFPercentage(1.6),
-                    //         }}
-                    //       >
-                    //         {item.amount}
-                    //       </Text>
-                    //     </View>
-                    //   </View>
-
-                    //   <View
-                    //     style={{
-                    //       marginLeft: RFPercentage(1),
-                    //       backgroundColor: item.bgcolor,
-                    //       padding: RFPercentage(0.5),
-                    //       paddingHorizontal: RFPercentage(1.2),
-                    //       borderWidth: RFPercentage(0.16),
-                    //       borderColor: item.textcolor,
-                    //       borderRadius: RFPercentage(0.7),
-                    //       alignItems: "center",
-                    //     }}
-                    //   >
-                    //     <Text
-                    //       style={{
-                    //         color: item.textcolor,
-                    //         fontFamily: FontFamily.regular,
-                    //         fontSize: RFPercentage(1.4),
-                    //       }}
-                    //     >
-                    //       {item.status}
-                    //     </Text>
-                    //   </View>
-                    // </TouchableOpacity>
                     <Transaction
+                        key={i}
                         item={item}
                         handleTransactionPress={handleTransactionPress}
                     />

@@ -162,7 +162,7 @@ const UploadModal = ({
                             <View
                                 style={{
                                     width: "90%",
-                                    paddingVertical: RFPercentage(1.5),
+                                    paddingVertical: RFPercentage(1.6),
                                     borderRadius: RFPercentage(1),
                                     borderWidth: RFPercentage(0.15),
                                     borderColor: "#B7B7B7",

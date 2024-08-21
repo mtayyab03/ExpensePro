@@ -18,7 +18,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         <View
             style={{
                 width: "90%",
-                paddingVertical: RFPercentage(1.5),
+                paddingVertical: RFPercentage(1.4),
                 borderRadius: RFPercentage(1),
                 alignItems: "center",
                 justifyContent: "center",
@@ -32,7 +32,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 const styles = StyleSheet.create({
     buttontext: {
         color: Colors.white,
-        fontSize: RFPercentage(1.8),
+        fontSize: RFPercentage(1.9),
         fontFamily: FontFamily.regular,
     },
 });

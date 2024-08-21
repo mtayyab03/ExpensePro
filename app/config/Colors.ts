@@ -9,10 +9,14 @@ export default {
     blacktext: "#1C1C1C",
     red: "#E33315",
     lightWhite: "#E5E5E5",
-    white: "#FFFFFF",
+    link: "#277C6C",
+    white: "#FFF",
     textcolor: "#656567",
     darkgray: "#000000A6",
     lightgray: "#00000005",
     placeholder: "#0D104080",
-    ilightwhite: "#F7F7F7",
+    lightwhite: "#F7F7F7",
+    borderColor: "#00000026",
+    borderColorSecondary: "#0000000F",
+    progress: "#52838F"
 };

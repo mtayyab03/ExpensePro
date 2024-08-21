@@ -34,6 +34,8 @@ import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import TitleField from "../components/TitleField";
 import PrimaryButton from "../components/PrimaryButton";
+import ZoomIcon from "../../assets/svg/ZoomIcon";
+import SwapIcon from "../../assets/svg/SwapIcon";
 const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
     const { image: initialImage, selectedName } = route.params;
 
@@ -176,7 +178,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                                 style={{
                                     width: RFPercentage(4),
                                     height: RFPercentage(0.8),
-                                    backgroundColor: Colors.primary,
+                                    backgroundColor: Colors.progress,
                                     borderRadius: RFPercentage(0.1),
                                 }}
                             />
@@ -186,7 +188,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                                     marginLeft: RFPercentage(0.3),
 
                                     height: RFPercentage(0.8),
-                                    backgroundColor: Colors.primary,
+                                    backgroundColor: Colors.progress,
                                     borderRadius: RFPercentage(0.1),
                                 }}
                             />
@@ -195,7 +197,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                                     marginLeft: RFPercentage(0.3),
                                     width: RFPercentage(4),
                                     height: RFPercentage(0.8),
-                                    backgroundColor: Colors.primary,
+                                    backgroundColor: Colors.progress,
                                     borderRadius: RFPercentage(0.1),
                                 }}
                             />
@@ -207,7 +209,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                 <View
                     style={{
                         width: "90%",
-                        marginVertical: RFPercentage(1.5),
+                        marginVertical: RFPercentage(1.6),
                     }}
                 >
                     <Text
@@ -226,10 +228,14 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                     style={{
                         width: "90%",
                         borderRadius: RFPercentage(1),
-                        backgroundColor: Colors.gray,
+                        borderWidth: 1,
+                        borderColor: "#00000026",
+                        backgroundColor: Colors.lightgray,
                         alignItems: "center",
                         justifyContent: "center",
                         overflow: "hidden",
+                        minHeight: 272,
+                        position: "relative",
                     }}
                 >
                     {image && (
@@ -241,6 +247,11 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                                     width: "100%",
                                     height: RFPercentage(16),
                                     backgroundColor: Colors.black,
+                                    borderTopLeftRadius: RFPercentage(1),
+                                    borderTopRightRadius: RFPercentage(1),
+                                    minHeight: 230,
+                                    position: "absolute",
+                                    top: 0,
                                 }}
                             />
                             <TouchableOpacity
@@ -248,11 +259,15 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                                 onPress={toggleModal}
                                 activeOpacity={0.7}
                             >
-                                <FontAwesome5
-                                    name='search-plus'
-                                    size={20}
-                                    color={Colors.white}
-                                />
+                                <ZoomIcon />
+                                <Text
+                                    style={{
+                                        marginLeft: RFPercentage(0.9),
+                                        color: Colors.white,
+                                    }}
+                                >
+                                    Press to zoom
+                                </Text>
                             </TouchableOpacity>
                             <Modal visible={modalVisible} transparent={true}>
                                 <TouchableOpacity
@@ -274,26 +289,29 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         onPress={handleReplaceImage}
                         style={{
                             width: "100%",
-                            backgroundColor: Colors.ilightwhite,
+                            borderBottomLeftRadius: RFPercentage(1),
+                            borderBottomRightRadius: RFPercentage(1),
+                            borderTopWidth: 1,
+                            borderColor: "#00000026",
+                            backgroundColor: Colors.white,
                             alignItems: "center",
                             justifyContent: "center",
-                            paddingVertical: RFPercentage(2),
+                            paddingVertical: RFPercentage(1),
                             flexDirection: "row",
-                            borderWidth: RFPercentage(0.1),
-                            borderColor: Colors.lightWhite,
+                            position: "absolute",
+                            bottom: 0,
+                            right: 0,
+                            left: 0,
                         }}
                     >
-                        <FontAwesome5
-                            name='exchange-alt'
-                            size={20}
-                            color={Colors.primary}
-                        />
+                        <SwapIcon />
                         <Text
                             style={{
                                 marginLeft: RFPercentage(1),
-                                color: Colors.blacktext,
+                                color: Colors.link,
                                 fontFamily: FontFamily.regular,
-                                fontSize: RFPercentage(1.7),
+                                fontSize: RFPercentage(1.9),
+                                fontWeight: 300,
                             }}
                         >
                             Replace
@@ -307,8 +325,8 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         width: "90%",
                         backgroundColor: "#F5F5F5",
                         borderRadius: RFPercentage(1),
-                        padding: RFPercentage(1.5),
-                        marginTop: RFPercentage(1),
+                        padding: RFPercentage(1.2),
+                        marginTop: RFPercentage(1.9),
                         overflow: "hidden",
                     }}
                 >
@@ -330,9 +348,9 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         <Text
                             style={{
                                 marginHorizontal: RFPercentage(0.5),
-                                color: Colors.gray,
+                                color: Colors.darkgray,
                                 fontFamily: FontFamily.regular,
-                                fontSize: RFPercentage(1.5),
+                                fontSize: RFPercentage(1.6),
                             }}
                         >
                             Verify information
@@ -366,7 +384,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                             <Text
                                 style={{
                                     marginVertical: RFPercentage(1),
-                                    fontSize: RFPercentage(1.5),
+                                    fontSize: RFPercentage(1.6),
                                     color: Colors.blacktext,
                                     fontFamily: FontFamily.regular,
                                 }}
@@ -403,7 +421,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                             <Text
                                 style={{
                                     marginVertical: RFPercentage(1),
-                                    fontSize: RFPercentage(1.5),
+                                    fontSize: RFPercentage(1.6),
                                     color: Colors.blacktext,
                                     fontFamily: FontFamily.regular,
                                 }}
@@ -472,7 +490,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         <Text
                             style={{
                                 marginVertical: RFPercentage(1),
-                                fontSize: RFPercentage(1.5),
+                                fontSize: RFPercentage(1.6),
                                 color: Colors.blacktext,
                                 fontFamily: FontFamily.regular,
                             }}
@@ -517,12 +535,12 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         borderWidth: RFPercentage(0.1),
                         borderRadius: RFPercentage(1),
                         borderColor: Colors.lightWhite,
-                        padding: RFPercentage(1.5),
+                        padding: RFPercentage(1.6),
                         paddingVertical: RFPercentage(1.8),
                         alignItems: "center",
                         flexDirection: "row",
 
-                        marginVertical: RFPercentage(1),
+                        marginVertical: RFPercentage(1.9),
                     }}
                 >
                     <View
@@ -542,13 +560,13 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         {isSelected && (
                             <Entypo
                                 name='check'
-                                size={16}
+                                size={14}
                                 color={Colors.white}
                             />
                         )}
                     </View>
 
-                    <View style={{ marginLeft: RFPercentage(1.5) }}>
+                    <View style={{ marginLeft: RFPercentage(1.6) }}>
                         <Text
                             style={{
                                 color: Colors.blacktext,
@@ -565,126 +583,146 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                 <View
                     style={{
                         width: "90%",
-                        backgroundColor: "#F5F5F5",
+                        backgroundColor: Colors.white,
                         borderRadius: RFPercentage(1),
-                        padding: RFPercentage(1.5),
-                        marginTop: RFPercentage(1),
-                        overflow: "hidden",
+                        borderWidth: RFPercentage(0.1),
+                        borderColor: Colors.borderColorSecondary,
+                        shadowColor: "#000000", // Ensure color is solid enough
+                        shadowOffset: {
+                            width: 0,
+                            height: 2,
+                        },
+                        shadowOpacity: 0.05, // Adjust opacity if necessary
+                        shadowRadius: .5,
+                        // Shadow for Android
+                        elevation: 5,
                     }}
                 >
-                    {/* category */}
                     <View
                         style={{
-                            width: "100%",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            marginBottom: RFPercentage(1),
+                            backgroundColor: Colors.lightgray,
+                            borderRadius: RFPercentage(1),
+                            padding: RFPercentage(1.6),
                         }}
                     >
-                        <Text
-                            style={{
-                                fontSize: RFPercentage(1.5),
-                                color: Colors.blacktext,
-                                fontFamily: FontFamily.regular,
-                            }}
-                        >
-                            Category(s)
-                        </Text>
-
-                        <MaterialIcons
-                            name='arrow-forward-ios'
-                            size={16}
-                            color={Colors.blacktext}
-                        />
-                    </View>
-
-                    {isCategoryVisible && (
+                        {/* category */}
                         <View
                             style={{
                                 width: "100%",
                                 flexDirection: "row",
                                 alignItems: "center",
-                                marginVertical: RFPercentage(0.5),
+                                justifyContent: "space-between",
+                                marginBottom: RFPercentage(1),
                             }}
                         >
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    borderWidth: RFPercentage(0.1),
-                                    borderColor: Colors.gray,
-                                    paddingHorizontal: RFPercentage(0.7),
-                                    paddingVertical: RFPercentage(0.5),
-                                    alignItems: "center",
-                                    borderRadius: RFPercentage(0.5),
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        fontSize: RFPercentage(1.3),
-                                        color: Colors.blacktext,
-                                        fontFamily: FontFamily.regular,
-                                    }}
-                                >
-                                    {selectedName}
-                                </Text>
-                                <TouchableOpacity
-                                    onPress={handleRemoveCategory}
-                                >
-                                    <Entypo
-                                        name='cross'
-                                        size={16}
-                                        color={Colors.blacktext}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    )}
-                    {/* category end */}
-
-                    <View
-                        style={{
-                            width: "100%",
-                            marginTop: RFPercentage(1),
-                            borderWidth: RFPercentage(0.1),
-                            borderRadius: RFPercentage(1),
-                            borderColor: Colors.gray,
-                            padding: RFPercentage(1.5),
-                            alignItems: "center",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <View style={{ width: "48%" }}>
                             <Text
                                 style={{
-                                    fontSize: RFPercentage(1.5),
+                                    fontSize: RFPercentage(1.6),
                                     color: Colors.blacktext,
                                     fontFamily: FontFamily.regular,
                                 }}
                             >
-                                Meal Attendance Count (if applicable)
+                                Category(s)
                             </Text>
+
+                            <MaterialIcons
+                                name='arrow-forward-ios'
+                                size={16}
+                                color={Colors.blacktext}
+                            />
                         </View>
+
+                        {isCategoryVisible && (
+                            <View
+                                style={{
+                                    width: "100%",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    marginVertical: RFPercentage(0.5),
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        borderWidth: RFPercentage(0.1),
+                                        borderColor: Colors.gray,
+                                        paddingHorizontal: RFPercentage(0.7),
+                                        paddingVertical: RFPercentage(0.5),
+                                        alignItems: "center",
+                                        borderRadius: RFPercentage(0.5),
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontSize: RFPercentage(1.3),
+                                            color: Colors.blacktext,
+                                            fontFamily: FontFamily.regular,
+                                        }}
+                                    >
+                                        {selectedName}
+                                    </Text>
+                                    <TouchableOpacity
+                                        onPress={handleRemoveCategory}
+                                    >
+                                        <Entypo
+                                            name='cross'
+                                            size={16}
+                                            color={Colors.blacktext}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
+                        {/* category end */}
+
                         <View
                             style={{
-                                flexDirection: "row",
-                                width: "30%",
+                                width: "100%",
+                                marginTop: RFPercentage(1),
                                 backgroundColor: Colors.white,
                                 borderWidth: RFPercentage(0.1),
-                                borderColor: Colors.gray,
-                                padding: RFPercentage(1.5),
-                                alignItems: "center",
                                 borderRadius: RFPercentage(1),
-                                justifyContent: "flex-start",
+                                borderColor: Colors.borderColor,
+                                paddingVertical: RFPercentage(1.4),
+                                paddingHorizontal: RFPercentage(1.9),
+                                alignItems: "center",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
                             }}
                         >
-                            <TextInput
-                                onChangeText={setMeal}
-                                value={meal}
-                                placeholder='#'
-                                placeholderTextColor={Colors.placeholder}
-                            />
+                            <View style={{ width: "48%" }}>
+                                <Text
+                                    style={{
+                                        fontSize: RFPercentage(1.6),
+                                        color: Colors.blacktext,
+                                        fontFamily: FontFamily.regular,
+                                    }}
+                                >
+                                    Meal Attendance Count (if applicable)
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    width: "25%",
+                                    backgroundColor: Colors.white,
+                                    borderWidth: RFPercentage(0.1),
+                                    borderColor: Colors.gray,
+                                    paddingHorizontal: RFPercentage(1.6),
+                                    alignItems: "center",
+                                    borderRadius: RFPercentage(1),
+                                    justifyContent: "flex-start",
+                                    height: 40,
+                                }}
+                            >
+                                <TextInput
+                                    onChangeText={setMeal}
+                                    value={meal}
+                                    placeholder='#'
+                                    style={{ width: "100%" }}
+                                    placeholderTextColor={Colors.placeholder}
+                                />
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -703,7 +741,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
                         onPress={() => navigation.goBack()}
                         style={{
                             width: "48%",
-                            paddingVertical: RFPercentage(1.5),
+                            paddingVertical: RFPercentage(1.4),
                             borderRadius: RFPercentage(1),
                             borderWidth: RFPercentage(0.15),
                             borderColor: Colors.gray,
@@ -739,12 +777,14 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     zoomButton: {
+        flexDirection: "row",
         position: "absolute",
         top: RFPercentage(1),
-        right: RFPercentage(1),
+        right: RFPercentage(12),
+        left: RFPercentage(12),
         backgroundColor: Colors.black,
         padding: RFPercentage(1),
-        borderRadius: RFPercentage(1),
+        borderRadius: RFPercentage(16),
     },
     modalContainer: {
         flex: 1,
@@ -773,14 +813,14 @@ const styles = StyleSheet.create({
         borderWidth: RFPercentage(0.1),
         borderColor: Colors.gray,
         color: Colors.blacktext,
-        padding: RFPercentage(1.5),
+        padding: RFPercentage(1.6),
         alignItems: "center",
         borderRadius: RFPercentage(1),
         justifyContent: "flex-start",
     },
     error: {
         color: Colors.red,
-        fontSize: RFPercentage(1.5),
+        fontSize: RFPercentage(1.6),
         marginTop: RFPercentage(0.5),
     },
     titleContainer: {
@@ -794,7 +834,7 @@ const styles = StyleSheet.create({
     },
     subTitleContainer: {
         width: "90%",
-        marginVertical: RFPercentage(1.5),
+        marginVertical: RFPercentage(1.6),
     },
     subTitle: {
         color: Colors.blacktext,
@@ -804,7 +844,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         alignItems: "center",
         justifyContent: "center",
-        marginTop: RFPercentage(1.5),
+        marginTop: RFPercentage(1.6),
         width: "90%",
         height: RFPercentage(22),
         borderRadius: RFPercentage(1),
@@ -892,10 +932,12 @@ const styles = StyleSheet.create({
         borderWidth: RFPercentage(0.1),
         borderColor: Colors.gray,
         justifyContent: "flex-start",
-        padding: RFPercentage(1),
+        paddingHorizontal: RFPercentage(1.4),
+        paddingVertical: RFPercentage(0.6),
     },
     textInputDescription: {
         color: Colors.blacktext,
+        padding: 0,
         fontFamily: FontFamily.regular,
         fontSize: RFPercentage(1.8),
     },

@@ -44,7 +44,7 @@ const Transaction: React.FC<TransactionProps> = ({
                 style={{
                     flexDirection: "row",
                     backgroundColor: Colors.lightgray,
-                    paddingVertical: RFPercentage(1.4),
+                    paddingVertical: RFPercentage(1.6),
                     paddingHorizontal: RFPercentage(1.9),
                     alignItems: "center",
                     justifyContent: "space-between",

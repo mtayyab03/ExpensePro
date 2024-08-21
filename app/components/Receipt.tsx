@@ -17,7 +17,7 @@ const Receipt: React.FC<ReceiptProps> = ({ item }) => {
                 width: "90%",
                 backgroundColor: Colors.white,
                 borderWidth: RFPercentage(0.17),
-                borderColor: "rgb(235, 235, 235)",
+                borderColor: Colors.borderColorSecondary,
                 borderRadius: RFPercentage(1),
                 marginVertical: RFPercentage(0.5),
                 shadowColor: "#000000", // Ensure color is solid enough
@@ -35,7 +35,7 @@ const Receipt: React.FC<ReceiptProps> = ({ item }) => {
                 style={{
                     flexDirection: "row",
                     backgroundColor: Colors.lightgray,
-                    paddingVertical: RFPercentage(1.4),
+                    paddingVertical: RFPercentage(1.6),
                     paddingHorizontal: RFPercentage(1.9),
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -46,11 +46,11 @@ const Receipt: React.FC<ReceiptProps> = ({ item }) => {
                         source={item.trendimage}
                         resizeMode='contain'
                         style={{
-                            height: RFPercentage(6),
-                            width: RFPercentage(6),
+                            height: 48,
+                            width: 48,
                         }}
                     />
-                    <View style={{ marginLeft: RFPercentage(1.5) }}>
+                    <View style={{ marginLeft: RFPercentage(1.6) }}>
                         <Text
                             style={{
                                 color: "#1E1E1E",
@@ -62,8 +62,8 @@ const Receipt: React.FC<ReceiptProps> = ({ item }) => {
                         </Text>
                         <Text
                             style={{
-                                marginTop: RFPercentage(0.8),
-                                color: Colors.gray,
+                                marginTop: RFPercentage(0.5),
+                                color: Colors.darkgray,
                                 fontFamily: FontFamily.regular,
                                 fontSize: RFPercentage(1.6),
                             }}

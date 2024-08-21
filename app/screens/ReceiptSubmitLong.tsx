@@ -26,6 +26,8 @@ import Screen from "../components/Screen";
 import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import PrimaryButton from "../components/PrimaryButton";
+import SwapIcon from "../../assets/svg/SwapIcon";
+import ZoomIcon from "../../assets/svg/ZoomIcon";
 
 // Define your navigation parameter types
 type RootStackParamList = {
@@ -90,7 +92,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
                         style={{
                             color: Colors.blacktext,
                             fontFamily: FontFamily.regular,
-                            fontSize: RFPercentage(1),
+                            fontSize: RFPercentage(1.4),
                             marginBottom: RFPercentage(0.5),
                         }}
                     >
@@ -101,7 +103,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
                             style={{
                                 width: RFPercentage(4),
                                 height: RFPercentage(0.8),
-                                backgroundColor: Colors.primary,
+                                backgroundColor: Colors.progress,
                                 borderRadius: RFPercentage(0.1),
                             }}
                         />
@@ -133,14 +135,14 @@ const ReceiptSubmitLong = ({ route }: any) => {
             <View
                 style={{
                     width: "90%",
-                    marginVertical: RFPercentage(1.5),
+                    marginVertical: RFPercentage(1.6),
                 }}
             >
                 <Text
                     style={{
                         color: Colors.blacktext,
                         fontFamily: FontFamily.bold,
-                        fontSize: RFPercentage(1.7),
+                        fontSize: RFPercentage(1.9),
                     }}
                 >
                     Choose Receipt Photo
@@ -152,10 +154,14 @@ const ReceiptSubmitLong = ({ route }: any) => {
                 style={{
                     width: "90%",
                     borderRadius: RFPercentage(1),
-                    backgroundColor: Colors.gray,
+                    borderWidth: 1,
+                    borderColor: "#00000026",
+                    backgroundColor: Colors.lightgray,
                     alignItems: "center",
                     justifyContent: "center",
                     overflow: "hidden",
+                    minHeight: 272,
+                    position: "relative",
                 }}
             >
                 {image && (
@@ -165,8 +171,13 @@ const ReceiptSubmitLong = ({ route }: any) => {
                             // source={image}
                             style={{
                                 width: "100%",
-                                height: RFPercentage(40),
+                                height: RFPercentage(16),
                                 backgroundColor: Colors.black,
+                                borderTopLeftRadius: RFPercentage(1),
+                                borderTopRightRadius: RFPercentage(1),
+                                minHeight: 230,
+                                position: "absolute",
+                                top: 0,
                             }}
                         />
                         <TouchableOpacity
@@ -174,11 +185,15 @@ const ReceiptSubmitLong = ({ route }: any) => {
                             onPress={toggleModal}
                             activeOpacity={0.7}
                         >
-                            <FontAwesome5
-                                name='search-plus'
-                                size={20}
-                                color={Colors.white}
-                            />
+                            <ZoomIcon />
+                            <Text
+                                style={{
+                                    marginLeft: RFPercentage(0.9),
+                                    color: Colors.white,
+                                }}
+                            >
+                                Press to zoom
+                            </Text>
                         </TouchableOpacity>
                         <Modal visible={modalVisible} transparent={true}>
                             <TouchableOpacity
@@ -200,26 +215,29 @@ const ReceiptSubmitLong = ({ route }: any) => {
                     onPress={handleReplaceImage}
                     style={{
                         width: "100%",
-                        backgroundColor: Colors.ilightwhite,
+                        borderBottomLeftRadius: RFPercentage(1),
+                        borderBottomRightRadius: RFPercentage(1),
+                        borderTopWidth: 1,
+                        borderColor: "#00000026",
+                        backgroundColor: Colors.white,
                         alignItems: "center",
                         justifyContent: "center",
-                        paddingVertical: RFPercentage(2),
+                        paddingVertical: RFPercentage(1),
                         flexDirection: "row",
-                        borderWidth: RFPercentage(0.1),
-                        borderColor: Colors.lightWhite,
+                        position: "absolute",
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
                     }}
                 >
-                    <FontAwesome5
-                        name='exchange-alt'
-                        size={20}
-                        color={Colors.primary}
-                    />
+                    <SwapIcon />
                     <Text
                         style={{
                             marginLeft: RFPercentage(1),
-                            color: Colors.blacktext,
+                            color: Colors.link,
                             fontFamily: FontFamily.regular,
-                            fontSize: RFPercentage(1.7),
+                            fontSize: RFPercentage(1.9),
+                            fontWeight: 300,
                         }}
                     >
                         Replace
@@ -241,7 +259,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
                     onPress={() => navigation.goBack()}
                     style={{
                         width: "48%",
-                        paddingVertical: RFPercentage(1.5),
+                        paddingVertical: RFPercentage(1.3),
                         borderRadius: RFPercentage(1),
                         borderWidth: RFPercentage(0.15),
                         borderColor: Colors.gray,
@@ -254,7 +272,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
                         style={{
                             color: Colors.blacktext,
                             fontFamily: FontFamily.regular,
-                            fontSize: RFPercentage(1.7),
+                            fontSize: RFPercentage(1.9),
                         }}
                     >
                         Cancel
@@ -301,7 +319,7 @@ const styles = StyleSheet.create({
         height: "90%",
     },
     loginbutton: {
-        paddingVertical: RFPercentage(1.5),
+        
         width: "55%",
         alignItems: "center",
         justifyContent: "center",
@@ -315,7 +333,7 @@ const styles = StyleSheet.create({
     imageContainer: {
         alignItems: "center",
         justifyContent: "center",
-        marginTop: RFPercentage(1.5),
+        marginTop: RFPercentage(1.6),
         width: "90%",
         height: RFPercentage(22),
         borderRadius: RFPercentage(1),

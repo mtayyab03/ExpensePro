@@ -40,7 +40,7 @@ const StatusTag: React.FC<TagProps> = ({ item }) => {
                 style={{
                     color: textColor,
                     fontFamily: FontFamily.regular,
-                    fontSize: RFPercentage(1.4),
+                    fontSize: RFPercentage(1.6),
                 }}
             >
                 {item.status}

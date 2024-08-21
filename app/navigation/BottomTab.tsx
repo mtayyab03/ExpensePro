@@ -19,12 +19,9 @@ import * as DocumentPicker from "expo-document-picker";
 //screens
 import Transactions from "../screens/Transactions";
 import Receipts from "../screens/Receipts";
-import AppLine from "../components/AppLine";
-import PrimaryButton from "../components/PrimaryButton";
 
 //config
 import Colors from "../config/Colors";
-import icons from "../config/icons";
 import { FontFamily } from "../config/font";
 import TransactionIcon from "../../assets/svg/TransactionIcon";
 import ReceiptIcon from "../../assets/svg/ReceiptIcon";

@@ -24,6 +24,8 @@ import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import TitleField from "../components/TitleField";
 import PrimaryButton from "../components/PrimaryButton";
+import SwapIcon from "../../assets/svg/SwapIcon";
+import ZoomIcon from "../../assets/svg/ZoomIcon";
 
 const ReceiptSubmit = ({ navigation, route }: any) => {
     const [supplier, setSupplier] = useState("MEDITERRANEAN CAFE");
@@ -137,14 +139,14 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                 <View
                     style={{
                         width: "90%",
-                        marginVertical: RFPercentage(1.5),
+                        marginVertical: RFPercentage(1.9),
                     }}
                 >
                     <Text
                         style={{
                             color: Colors.blacktext,
                             fontFamily: FontFamily.bold,
-                            fontSize: RFPercentage(1.7),
+                            fontSize: RFPercentage(1.9),
                         }}
                     >
                         Enter Receipt Details
@@ -156,10 +158,14 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                     style={{
                         width: "90%",
                         borderRadius: RFPercentage(1),
-                        backgroundColor: Colors.gray,
+                        borderWidth: 1,
+                        borderColor: "#00000026",
+                        backgroundColor: Colors.lightgray,
                         alignItems: "center",
                         justifyContent: "center",
                         overflow: "hidden",
+                        minHeight: 272,
+                        position: "relative",
                     }}
                 >
                     {image && (
@@ -171,6 +177,11 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                                     width: "100%",
                                     height: RFPercentage(16),
                                     backgroundColor: Colors.black,
+                                    borderTopLeftRadius: RFPercentage(1),
+                                    borderTopRightRadius: RFPercentage(1),
+                                    minHeight: 230,
+                                    position: "absolute",
+                                    top: 0,
                                 }}
                             />
                             <TouchableOpacity
@@ -178,11 +189,10 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                                 onPress={toggleModal}
                                 activeOpacity={0.7}
                             >
-                                <FontAwesome5
-                                    name='search-plus'
-                                    size={20}
-                                    color={Colors.white}
-                                />
+                                <ZoomIcon/>
+                                <Text style={{ marginLeft:RFPercentage(.9), color: Colors.white }}>
+                                    Press to zoom
+                                </Text>
                             </TouchableOpacity>
                             <Modal visible={modalVisible} transparent={true}>
                                 <TouchableOpacity
@@ -204,26 +214,29 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                         onPress={handleReplaceImage}
                         style={{
                             width: "100%",
-                            backgroundColor: Colors.ilightwhite,
+                            borderBottomLeftRadius: RFPercentage(1),
+                            borderBottomRightRadius: RFPercentage(1),
+                            borderTopWidth: 1,
+                            borderColor: "#00000026",
+                            backgroundColor: Colors.white,
                             alignItems: "center",
                             justifyContent: "center",
-                            paddingVertical: RFPercentage(2),
+                            paddingVertical: RFPercentage(1),
                             flexDirection: "row",
-                            borderWidth: RFPercentage(0.1),
-                            borderColor: Colors.lightWhite,
+                            position: "absolute",
+                            bottom: 0,
+                            right: 0,
+                            left: 0,
                         }}
                     >
-                        <FontAwesome5
-                            name='exchange-alt'
-                            size={20}
-                            color={Colors.primary}
-                        />
+                        <SwapIcon />
                         <Text
                             style={{
                                 marginLeft: RFPercentage(1),
-                                color: Colors.blacktext,
+                                color: Colors.link,
                                 fontFamily: FontFamily.regular,
-                                fontSize: RFPercentage(1.7),
+                                fontSize: RFPercentage(1.9),
+                                fontWeight: 300,
                             }}
                         >
                             Replace
@@ -237,8 +250,8 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                         width: "90%",
                         backgroundColor: "#F5F5F5",
                         borderRadius: RFPercentage(1),
-                        padding: RFPercentage(1.5),
-                        marginTop: RFPercentage(1),
+                        padding: RFPercentage(0.9),
+                        marginTop: RFPercentage(1.9),
                         overflow: "hidden",
                     }}
                 >
@@ -260,9 +273,9 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                         <Text
                             style={{
                                 marginHorizontal: RFPercentage(0.5),
-                                color: Colors.gray,
+                                color: Colors.darkgray,
                                 fontFamily: FontFamily.regular,
-                                fontSize: RFPercentage(1.5),
+                                fontSize: RFPercentage(1.6),
                             }}
                         >
                             Verify information
@@ -394,11 +407,12 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                 <View
                     style={{
                         width: "90%",
-                        marginTop: RFPercentage(1),
+                        marginTop: RFPercentage(1.9),
                         borderWidth: RFPercentage(0.1),
                         borderRadius: RFPercentage(1),
                         borderColor: Colors.gray,
-                        padding: RFPercentage(1.5),
+                        paddingHorizontal: RFPercentage(1.9),
+                        paddingVertical: RFPercentage(1.4),
                         alignItems: "center",
                         flexDirection: "row",
                         justifyContent: "space-between",
@@ -407,7 +421,7 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                     <View style={{ width: "48%" }}>
                         <Text
                             style={{
-                                fontSize: RFPercentage(1.5),
+                                fontSize: RFPercentage(1.6),
                                 color: Colors.blacktext,
                                 fontFamily: FontFamily.regular,
                             }}
@@ -418,20 +432,22 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                     <View
                         style={{
                             flexDirection: "row",
-                            width: "30%",
+                            width: "25%",
                             backgroundColor: Colors.white,
                             borderWidth: RFPercentage(0.1),
                             borderColor: Colors.gray,
-                            padding: RFPercentage(1.5),
+                            paddingHorizontal: RFPercentage(1.6),
                             alignItems: "center",
                             borderRadius: RFPercentage(1),
                             justifyContent: "flex-start",
+                            height: 40,
                         }}
                     >
                         <TextInput
                             onChangeText={setMeal}
                             value={meal}
                             placeholder='#'
+                            style={{ width: "100%" }}
                             placeholderTextColor={Colors.placeholder}
                         />
                     </View>
@@ -500,7 +516,7 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
                     onPress={() => navigation.goBack()}
                     style={{
                         width: "90%",
-                        paddingVertical: RFPercentage(1.5),
+                        paddingVertical: RFPercentage(1.3),
                         borderRadius: RFPercentage(1),
                         borderWidth: RFPercentage(0.15),
                         borderColor: Colors.gray,
@@ -525,12 +541,14 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     zoomButton: {
+        flexDirection: "row",
         position: "absolute",
         top: RFPercentage(1),
-        right: RFPercentage(1),
+        right: RFPercentage(12),
+        left: RFPercentage(12),
         backgroundColor: Colors.black,
         padding: RFPercentage(1),
-        borderRadius: RFPercentage(1),
+        borderRadius: RFPercentage(16),
     },
     modalContainer: {
         flex: 1,
@@ -543,14 +561,14 @@ const styles = StyleSheet.create({
         height: "90%",
     },
     loginbutton: {
-        paddingVertical: RFPercentage(1.5),
+        marginVertical: RFPercentage(1.9),
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
     },
     buttontext: {
         color: "#1C1C1C",
-        fontSize: RFPercentage(1.8),
+        fontSize: RFPercentage(1.9),
         fontFamily: FontFamily.regular,
     },
     doublefield: {
@@ -629,7 +647,7 @@ const styles = StyleSheet.create({
         fontSize: RFPercentage(1.8),
     },
     verifyText: {
-        color: Colors.gray,
+        color: Colors.darkgray,
         fontFamily: FontFamily.regular,
         fontSize: RFPercentage(1.6),
     },
@@ -679,12 +697,14 @@ const styles = StyleSheet.create({
         borderWidth: RFPercentage(0.1),
         borderColor: Colors.gray,
         justifyContent: "flex-start",
-        padding: RFPercentage(1),
+        paddingHorizontal: RFPercentage(1.6),
+        paddingVertical: RFPercentage(0.6),
     },
     textInputDescription: {
         color: Colors.blacktext,
         fontFamily: FontFamily.regular,
         fontSize: RFPercentage(1.8),
+        padding: 0,
     },
     errorText: {
         color: Colors.red,
