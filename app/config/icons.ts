@@ -11,6 +11,7 @@ const ForkKnife = require("../../assets/images/ForkKnife.png");
 const Package = require("../../assets/images/Package.png");
 const Truck = require("../../assets/images/Truck.png");
 const YoutubeLogo = require("../../assets/images/YoutubeLogo.png");
+const noevent = require("../../assets/images/noevent.png");
 
 export default {
   dollar,
@@ -26,4 +27,5 @@ export default {
   Package,
   Truck,
   YoutubeLogo,
+  noevent,
 };

@@ -7,92 +7,94 @@ import { FontFamily } from "../config/font";
 import { SubmittedReceipt } from "../models/types";
 
 interface ReceiptProps {
-    item: SubmittedReceipt;
+  item: SubmittedReceipt;
+  onpress: () => void; // Add this line to include the onpress prop
 }
 
-const Receipt: React.FC<ReceiptProps> = ({ item }) => {
-    return (
-        <TouchableOpacity
+const Receipt: React.FC<ReceiptProps> = ({ item, onpress }: any) => {
+  return (
+    <TouchableOpacity
+      onPress={onpress}
+      style={{
+        width: "90%",
+        backgroundColor: Colors.white,
+        borderWidth: RFPercentage(0.17),
+        borderColor: Colors.borderColorSecondary,
+        borderRadius: RFPercentage(1),
+        marginVertical: RFPercentage(0.5),
+        shadowColor: "#000000", // Ensure color is solid enough
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.05, // Adjust opacity if necessary
+        shadowRadius: 2,
+        // Shadow for Android
+        elevation: 5,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          backgroundColor: Colors.lightgray,
+          paddingVertical: RFPercentage(1.6),
+          paddingHorizontal: RFPercentage(1.9),
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image
+            source={item.trendimage}
+            resizeMode="contain"
             style={{
-                width: "90%",
-                backgroundColor: Colors.white,
-                borderWidth: RFPercentage(0.17),
-                borderColor: Colors.borderColorSecondary,
-                borderRadius: RFPercentage(1),
-                marginVertical: RFPercentage(0.5),
-                shadowColor: "#000000", // Ensure color is solid enough
-                shadowOffset: {
-                    width: 0,
-                    height: 2,
-                },
-                shadowOpacity: 0.05, // Adjust opacity if necessary
-                shadowRadius: 2,
-                // Shadow for Android
-                elevation: 5,
+              height: 48,
+              width: 48,
             }}
-        >
-            <View
-                style={{
-                    flexDirection: "row",
-                    backgroundColor: Colors.lightgray,
-                    paddingVertical: RFPercentage(1.6),
-                    paddingHorizontal: RFPercentage(1.9),
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                }}
+          />
+          <View style={{ marginLeft: RFPercentage(1.6) }}>
+            <Text
+              style={{
+                color: "#1E1E1E",
+                fontFamily: FontFamily.bold,
+                fontSize: RFPercentage(1.6),
+              }}
             >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                        source={item.trendimage}
-                        resizeMode='contain'
-                        style={{
-                            height: 48,
-                            width: 48,
-                        }}
-                    />
-                    <View style={{ marginLeft: RFPercentage(1.6) }}>
-                        <Text
-                            style={{
-                                color: "#1E1E1E",
-                                fontFamily: FontFamily.bold,
-                                fontSize: RFPercentage(1.6),
-                            }}
-                        >
-                            {item.title}
-                        </Text>
-                        <Text
-                            style={{
-                                marginTop: RFPercentage(0.5),
-                                color: Colors.darkgray,
-                                fontFamily: FontFamily.regular,
-                                fontSize: RFPercentage(1.6),
-                            }}
-                        >
-                            {item.status}
-                        </Text>
-                    </View>
-                </View>
+              {item.title}
+            </Text>
+            <Text
+              style={{
+                marginTop: RFPercentage(0.5),
+                color: Colors.darkgray,
+                fontFamily: FontFamily.regular,
+                fontSize: RFPercentage(1.6),
+              }}
+            >
+              {item.status}
+            </Text>
+          </View>
+        </View>
 
-                <View>
-                    <Text
-                        style={{
-                            color: "#1E1E1E",
-                            fontFamily: FontFamily.bold,
-                            fontSize: RFPercentage(1.6),
-                        }}
-                    >
-                        {item.amount}
-                    </Text>
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
+        <View>
+          <Text
+            style={{
+              color: "#1E1E1E",
+              fontFamily: FontFamily.bold,
+              fontSize: RFPercentage(1.6),
+            }}
+          >
+            {item.amount}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 };
 const styles = StyleSheet.create({
-    buttontext: {
-        color: Colors.white,
-        fontSize: RFPercentage(1.8),
-        fontFamily: FontFamily.regular,
-    },
+  buttontext: {
+    color: Colors.white,
+    fontSize: RFPercentage(1.8),
+    fontFamily: FontFamily.regular,
+  },
 });
 export default Receipt;

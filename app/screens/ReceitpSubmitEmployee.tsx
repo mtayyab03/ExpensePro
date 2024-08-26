@@ -21,7 +21,6 @@ import {
 } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
-import { showMessage } from "react-native-flash-message";
 
 //config
 import Colors from "../config/Colors";
