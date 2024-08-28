@@ -8,6 +8,7 @@ import ReceiptSubmit from "../screens/ReceiptSubmit";
 import ReceiptSubmitLong from "../screens/ReceiptSubmitLong";
 import ReceiptCategory from "../screens/ReceiptCategory";
 import ReceitpSubmitEmployee from "../screens/ReceitpSubmitEmployee";
+import NotificationScreen from "../screens/NotificationScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,11 @@ const NavigationStack: React.FC = () => {
       <Stack.Screen
         name="ReceitpSubmitEmployee"
         component={ReceitpSubmitEmployee}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NotificationScreen"
+        component={NotificationScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
