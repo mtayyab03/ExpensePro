@@ -39,7 +39,7 @@ import Transaction from "../components/Transaction";
 
 // Define the type for route params
 type RootStackParamList = {
-  Transactions: { showAlert?: boolean }; // Add other params as needed
+  Transactions: { showAlert?: boolean; selectedTransactionTitle?: string };
 };
 
 // Define a type for your route prop
@@ -47,10 +47,30 @@ type TransactionsRouteProp = RouteProp<RootStackParamList, "Transactions">;
 const Transactions: React.FC = () => {
   const route = useRoute<TransactionsRouteProp>();
   const [alertVisible, setAlertVisible] = useState(false);
-
+  const { selectedTransactionTitle } = route.params || {};
+  useEffect(() => {
+    if (selectedTransactionTitle) {
+      // Open the appropriate modal based on the transaction title
+      if (selectedTransactionTitle === "Chipotle") {
+        setIsStatusModalVisible(true);
+      } else if (selectedTransactionTitle === "Lyft") {
+        setIsStatusModalVisible(true);
+      }
+    }
+  }, [selectedTransactionTitle]);
   useEffect(() => {
     if (route.params?.showAlert) {
       setAlertVisible(true);
+    }
+
+    if (route.params?.selectedTransactionTitle) {
+      const transaction: any = transactionSlip.find(
+        (item) => item.title === route.params.selectedTransactionTitle
+      );
+      if (transaction) {
+        setSelectedTransaction(transaction);
+        setIsStatusModalVisible(true);
+      }
     }
   }, [route.params]);
 
@@ -61,6 +81,7 @@ const Transactions: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

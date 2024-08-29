@@ -1,5 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { NotificationProvider } from "./app/appContext/NotificationContext";
 import {
   useFonts,
   DMSans_400Regular,
@@ -24,9 +25,11 @@ const App: React.FC = () => {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <NavigationStack />
-      </NavigationContainer>
+      <NotificationProvider>
+        <NavigationContainer>
+          <NavigationStack />
+        </NavigationContainer>
+      </NotificationProvider>
     );
   }
 };

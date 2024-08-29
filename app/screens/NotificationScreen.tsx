@@ -1,18 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  ScrollView,
-  Modal,
-  TouchableOpacity,
-  Animated,
-  Easing,
-} from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
-import CustomAlert from "../components/CustomAlert";
+import { useNotification } from "../appContext/NotificationContext";
 
 //config
 import Colors from "../config/Colors";
@@ -25,8 +15,6 @@ import CloseIcon from "../../assets/svg/CloseIcon";
 // componnet
 import Screen from "../components/Screen";
 import PrimaryButton from "../components/PrimaryButton";
-import AppLine from "../components/AppLine";
-import Alert from "../components/Alert";
 import Header from "../components/Header";
 
 const NotificationScreen = ({ navigation }: any) => {
@@ -37,12 +25,22 @@ const NotificationScreen = ({ navigation }: any) => {
       description:
         "Add receipt for the $13.50 transaction at Chipotle on 03/04/24",
       isSelected: false,
+      onpress: () => {
+        navigation.navigate("Transactions", {
+          selectedTransactionTitle: "Chipotle",
+        });
+      },
     },
     {
       id: 2,
       title: "Reminder to Upload Receipt - Lyft",
       description: "Add receipt for the $15.25 transaction at Lyft on 03/04/24",
       isSelected: false,
+      onpress: () => {
+        navigation.navigate("Transactions", {
+          selectedTransactionTitle: "Lyft",
+        });
+      },
     },
   ];
   const lastweekcards = [
@@ -61,21 +59,31 @@ const NotificationScreen = ({ navigation }: any) => {
       isSelected: false,
     },
   ];
-  const [cards, setCards] = useState(notificationthisCard);
-  const [lastcards, setLastweekcards] = useState(lastweekcards);
-
+  const [cards, setCards] = useState<any>(notificationthisCard);
+  const [lastcards, setLastweekcards] = useState<any>(lastweekcards);
+  // const { notificationCount, setNotificationCount } = route.params;
+  const { notificationCount, setNotificationCount } = useNotification();
   // Handle press function to toggle the isSelected state
   const handlePress = (index: any) => {
-    const updatedCards = cards.map((card, i) =>
+    const updatedCards = cards.map((card: any, i: any) =>
       i === index ? { ...card, isSelected: !card.isSelected } : card
     );
     setCards(updatedCards);
   };
   const handleWeekPress = (index: number) => {
-    const updatedNewCards = lastcards.map((card, i) =>
+    const updatedNewCards = lastcards.map((card: any, i: any) =>
       i === index ? { ...card, isSelected: !card.isSelected } : card
     );
     setLastweekcards(updatedNewCards);
+  };
+  const markAsRead = () => {
+    const selectedCards = cards.filter((card: any) => card.isSelected).length;
+    const selectedLastWeekCards = lastcards.filter(
+      (card: any) => card.isSelected
+    ).length;
+    const totalSelected = selectedCards + selectedLastWeekCards;
+
+    setNotificationCount(notificationCount - totalSelected);
   };
 
   return (
@@ -123,172 +131,217 @@ const NotificationScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ width: "90%" }}>
-        <Text
-          style={{
-            marginTop: RFPercentage(3),
-            color: "rgb(89, 89, 89)",
-            fontFamily: FontFamily.regular,
-            fontSize: RFPercentage(1.5),
-          }}
-        >
-          This Week
-        </Text>
-      </View>
-
-      {cards.map((item: any, i: any) => (
-        <TouchableOpacity
-          key={i}
-          activeOpacity={0.7}
+      {cards.length === 0 && lastcards.length === 0 ? (
+        <View
           style={{
             width: "90%",
-            borderWidth: RFPercentage(0.1),
-            borderRadius: RFPercentage(1),
-            borderColor: item.isSelected ? Colors.green : Colors.lightWhite,
-            borderLeftColor: Colors.primary,
-            borderLeftWidth: RFPercentage(1),
-            padding: RFPercentage(1.6),
-            paddingVertical: RFPercentage(1.8),
-            backgroundColor: item.isSelected ? "#DFEEEC" : Colors.white,
             alignItems: "center",
-            flexDirection: "row",
-            marginVertical: RFPercentage(0.7),
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => handlePress(i)}
-            activeOpacity={0.7}
-            style={{
-              width: RFPercentage(2),
-              height: RFPercentage(2),
-              borderRadius: RFPercentage(0.3),
-              borderWidth: RFPercentage(0.1),
-              borderColor: Colors.gray,
-              backgroundColor: item.isSelected ? Colors.green : Colors.white,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {item.isSelected && (
-              <Entypo name="check" size={14} color={Colors.white} />
-            )}
-          </TouchableOpacity>
-
-          <View style={{ marginLeft: RFPercentage(1.6) }}>
-            <Text
-              style={{
-                color: "#262626",
-                fontFamily: FontFamily.bold,
-                fontSize: RFPercentage(1.4),
-              }}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={{
-                marginTop: RFPercentage(0.5),
-                color: "rgb(89, 89, 89)",
-                fontFamily: FontFamily.regular,
-                fontSize: RFPercentage(1.4),
-              }}
-            >
-              {item.description}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-
-      <View style={{ width: "90%" }}>
-        <Text
-          style={{
+            justifyContent: "center",
+            borderWidth: RFPercentage(0.15),
+            borderColor: Colors.lightWhite,
+            borderRadius: RFPercentage(2),
+            paddingVertical: RFPercentage(10),
+            paddingHorizontal: RFPercentage(4),
             marginTop: RFPercentage(3),
-            color: "rgb(89, 89, 89)",
-            fontFamily: FontFamily.regular,
-            fontSize: RFPercentage(1.5),
           }}
         >
-          Last Week
-        </Text>
-      </View>
-
-      {lastcards.map((item: any, i: any) => (
-        <TouchableOpacity
-          key={i}
-          activeOpacity={0.7}
-          style={{
-            width: "90%",
-            borderWidth: RFPercentage(0.1),
-            borderRadius: RFPercentage(1),
-            borderColor: item.isSelected ? Colors.green : Colors.lightWhite,
-
-            padding: RFPercentage(1.6),
-            paddingVertical: RFPercentage(1.8),
-            backgroundColor: item.isSelected ? "#DFEEEC" : Colors.white,
-            alignItems: "center",
-            flexDirection: "row",
-            marginVertical: RFPercentage(0.7),
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => handleWeekPress(i)}
-            activeOpacity={0.7}
+          <Image
+            source={icons.noevent}
             style={{
-              width: RFPercentage(2),
-              height: RFPercentage(2),
-              borderRadius: RFPercentage(0.3),
-              borderWidth: RFPercentage(0.1),
-              borderColor: Colors.gray,
-              backgroundColor: item.isSelected ? Colors.green : Colors.white,
-              alignItems: "center",
-              justifyContent: "center",
+              width: RFPercentage(16),
+              height: RFPercentage(10),
             }}
-          >
-            {item.isSelected && (
-              <Entypo name="check" size={14} color={Colors.white} />
-            )}
-          </TouchableOpacity>
-
-          <View style={{ marginLeft: RFPercentage(1.6) }}>
-            <Text
-              style={{
-                color: "#262626",
-                fontFamily: FontFamily.bold,
-                fontSize: RFPercentage(1.4),
-              }}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={{
-                marginTop: RFPercentage(0.5),
-                color: "rgb(89, 89, 89)",
-                fontFamily: FontFamily.regular,
-                fontSize: RFPercentage(1.4),
-              }}
-            >
-              {item.description}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-      <View
-        style={{
-          backgroundColor: Colors.white,
-          width: "100%",
-          paddingVertical: RFPercentage(2),
-          paddingBottom: RFPercentage(3),
-          position: "absolute",
-          bottom: 0,
-          zIndex: 1,
-        }}
-      >
-        <TouchableOpacity style={styles.loginbutton} activeOpacity={0.7}>
-          <PrimaryButton
-            title="Mark Selected as Read"
-            buttonColor={Colors.primary}
           />
-        </TouchableOpacity>
-      </View>
+          <Text
+            style={{
+              marginTop: RFPercentage(5),
+              fontSize: RFPercentage(1.6),
+              color: "#1C1C1C",
+            }}
+          >
+            You currently have no notifications.
+          </Text>
+        </View>
+      ) : (
+        <>
+          <View style={{ width: "90%" }}>
+            <Text
+              style={{
+                marginTop: RFPercentage(3),
+                color: "rgb(89, 89, 89)",
+                fontFamily: FontFamily.regular,
+                fontSize: RFPercentage(1.5),
+              }}
+            >
+              This Week
+            </Text>
+          </View>
+
+          {cards.map((item: any, i: any) => (
+            <TouchableOpacity
+              key={i}
+              onPress={item.onpress}
+              activeOpacity={0.7}
+              style={{
+                width: "90%",
+                borderWidth: RFPercentage(0.1),
+                borderRadius: RFPercentage(1),
+                borderColor: item.isSelected ? Colors.green : Colors.lightWhite,
+                borderLeftColor: item.borderLeftColor || Colors.primary,
+                borderLeftWidth:
+                  item.borderLeftWidth !== null ? RFPercentage(1) : null,
+                padding: RFPercentage(1.6),
+                paddingVertical: RFPercentage(1.8),
+                backgroundColor: item.isSelected ? "#DFEEEC" : Colors.white,
+                alignItems: "center",
+                flexDirection: "row",
+                marginVertical: RFPercentage(0.7),
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => handlePress(i)}
+                activeOpacity={0.7}
+                style={{
+                  width: RFPercentage(2),
+                  height: RFPercentage(2),
+                  borderRadius: RFPercentage(0.3),
+                  borderWidth: RFPercentage(0.1),
+                  borderColor: Colors.gray,
+                  backgroundColor: item.isSelected
+                    ? Colors.green
+                    : Colors.white,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {item.isSelected && (
+                  <Entypo name="check" size={14} color={Colors.white} />
+                )}
+              </TouchableOpacity>
+
+              <View style={{ marginLeft: RFPercentage(1.6) }}>
+                <Text
+                  style={{
+                    color: "#262626",
+                    fontFamily: FontFamily.bold,
+                    fontSize: RFPercentage(1.4),
+                  }}
+                >
+                  {item.title}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: RFPercentage(0.5),
+                    color: "rgb(89, 89, 89)",
+                    fontFamily: FontFamily.regular,
+                    fontSize: RFPercentage(1.4),
+                  }}
+                >
+                  {item.description}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+
+          <View style={{ width: "90%" }}>
+            <Text
+              style={{
+                marginTop: RFPercentage(3),
+                color: "rgb(89, 89, 89)",
+                fontFamily: FontFamily.regular,
+                fontSize: RFPercentage(1.5),
+              }}
+            >
+              Last Week
+            </Text>
+          </View>
+
+          {lastcards.map((item: any, i: any) => (
+            <TouchableOpacity
+              key={i}
+              activeOpacity={0.7}
+              style={{
+                width: "90%",
+                borderWidth: RFPercentage(0.1),
+                borderRadius: RFPercentage(1),
+                borderColor: item.isSelected ? Colors.green : Colors.lightWhite,
+
+                padding: RFPercentage(1.6),
+                paddingVertical: RFPercentage(1.8),
+                backgroundColor: item.isSelected ? "#DFEEEC" : Colors.white,
+                alignItems: "center",
+                flexDirection: "row",
+                marginVertical: RFPercentage(0.7),
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => handleWeekPress(i)}
+                activeOpacity={0.7}
+                style={{
+                  width: RFPercentage(2),
+                  height: RFPercentage(2),
+                  borderRadius: RFPercentage(0.3),
+                  borderWidth: RFPercentage(0.1),
+                  borderColor: Colors.gray,
+                  backgroundColor: item.isSelected
+                    ? Colors.green
+                    : Colors.white,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {item.isSelected && (
+                  <Entypo name="check" size={14} color={Colors.white} />
+                )}
+              </TouchableOpacity>
+
+              <View style={{ marginLeft: RFPercentage(1.6) }}>
+                <Text
+                  style={{
+                    color: "#262626",
+                    fontFamily: FontFamily.bold,
+                    fontSize: RFPercentage(1.4),
+                  }}
+                >
+                  {item.title}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: RFPercentage(0.5),
+                    color: "rgb(89, 89, 89)",
+                    fontFamily: FontFamily.regular,
+                    fontSize: RFPercentage(1.4),
+                  }}
+                >
+                  {item.description}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+          <View
+            style={{
+              backgroundColor: Colors.white,
+              width: "100%",
+              paddingVertical: RFPercentage(2),
+              paddingBottom: RFPercentage(3),
+              position: "absolute",
+              bottom: 0,
+              zIndex: 1,
+            }}
+          >
+            <TouchableOpacity
+              onPress={markAsRead}
+              style={styles.loginbutton}
+              activeOpacity={0.7}
+            >
+              <PrimaryButton
+                title="Mark Selected as Read"
+                buttonColor={Colors.primary}
+              />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </Screen>
   );
 };

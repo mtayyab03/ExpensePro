@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNotification } from "../appContext/NotificationContext";
 
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -9,7 +10,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const Header: React.FC = () => {
   const navigation = useNavigation<any>();
-  const [notificationCount, setNotificationCount] = useState(3); // Example count
+  const { notificationCount } = useNotification();
   return (
     <View
       style={{
