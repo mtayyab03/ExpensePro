@@ -43,7 +43,7 @@ const EmptyScreen: React.FC = () => {
 };
 const BottomTab: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
   const navigation = useNavigation<NavigationProp>();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 

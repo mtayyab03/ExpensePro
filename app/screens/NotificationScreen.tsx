@@ -69,6 +69,7 @@ const NotificationScreen = ({ navigation }: any) => {
       i === index ? { ...card, isSelected: !card.isSelected } : card
     );
     setCards(updatedCards);
+    markAsRead();
   };
   const handleWeekPress = (index: number) => {
     const updatedNewCards = lastcards.map((card: any, i: any) =>
