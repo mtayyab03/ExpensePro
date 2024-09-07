@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import { useNotification } from "../appContext/NotificationContext";
 
 //config
@@ -37,8 +37,8 @@ const NotificationScreen = ({ navigation }: any) => {
       description: "Add receipt for the $15.25 transaction at Lyft on 03/04/24",
       isSelected: false,
       onpress: () => {
-        navigation.navigate("Transactions", {
-          selectedTransactionTitle: "Lyft",
+        navigation.navigate("Receipts", {
+          selectedTransactionTitle: "Receipt 7052",
         });
       },
     },
@@ -69,7 +69,6 @@ const NotificationScreen = ({ navigation }: any) => {
       i === index ? { ...card, isSelected: !card.isSelected } : card
     );
     setCards(updatedCards);
-    markAsRead();
   };
   const handleWeekPress = (index: number) => {
     const updatedNewCards = lastcards.map((card: any, i: any) =>
@@ -78,15 +77,21 @@ const NotificationScreen = ({ navigation }: any) => {
     setLastweekcards(updatedNewCards);
   };
   const markAsRead = () => {
-    const selectedCards = cards.filter((card: any) => card.isSelected).length;
-    const selectedLastWeekCards = lastcards.filter(
-      (card: any) => card.isSelected
-    ).length;
-    const totalSelected = selectedCards + selectedLastWeekCards;
+    const updatedCards = cards.filter((card: any) => !card.isSelected); // Remove selected cards
+    const updatedLastWeekCards = lastcards.filter(
+      (card: any) => !card.isSelected
+    ); // Remove selected last week cards
 
-    setNotificationCount(notificationCount - totalSelected);
+    setCards(updatedCards);
+    setLastweekcards(updatedLastWeekCards);
+
+    // Calculate how many were selected before removing them and update notification count
+    const totalSelected =
+      cards.filter((card: any) => card.isSelected).length +
+      lastcards.filter((card: any) => card.isSelected).length;
+
+    setNotificationCount(notificationCount - totalSelected); // Adjust notification count
   };
-
   return (
     <Screen style={styles.screen}>
       <Header />
@@ -150,7 +155,7 @@ const NotificationScreen = ({ navigation }: any) => {
             source={icons.noevent}
             style={{
               width: RFPercentage(16),
-              height: RFPercentage(10),
+              height: RFPercentage(20),
             }}
           />
           <Text

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { FontAwesome6, Entypo } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";

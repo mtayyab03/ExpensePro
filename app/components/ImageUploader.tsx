@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -6,9 +6,9 @@ import {
   Modal,
   TouchableOpacity,
   Text,
+  Dimensions,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { Feather } from "@expo/vector-icons";
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import ZoomIcon from "../../assets/svg/ZoomIcon";
@@ -25,19 +25,41 @@ const ImageUploader: React.FC<ImageContainerProps> = ({
   onReplaceImage,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    if (image) {
+      // Get the image dimensions
+      Image.getSize(
+        image,
+        (width, height) => {
+          const screenWidth = Dimensions.get("window").width * 0.9; // 90% of screen width
+          const scaleFactor = width / screenWidth;
+          const imageHeight = height / scaleFactor;
+          setImageDimensions({ width: screenWidth, height: imageHeight });
+        },
+        (error) => {
+          console.log("Failed to get image size:", error);
+        }
+      );
+    }
+  }, [image]);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { height: imageDimensions.height }]}>
       {image && (
         <>
           <Image
             source={{ uri: image }}
             resizeMode="contain"
-            style={styles.image}
+            style={[styles.image, { height: imageDimensions.height }]}
           />
           <TouchableOpacity
             style={styles.zoomButton}
@@ -84,18 +106,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    minHeight: 272,
+    minHeight: 272, // minimum height
     position: "relative",
   },
   image: {
     width: "100%",
-    height: RFPercentage(16),
     backgroundColor: Colors.gray,
     borderTopLeftRadius: RFPercentage(1),
     borderTopRightRadius: RFPercentage(1),
-    minHeight: 230,
-    position: "absolute",
-    top: 0,
   },
   zoomButton: {
     flexDirection: "row",

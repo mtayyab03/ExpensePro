@@ -3,16 +3,14 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity,
   Image,
   ScrollView,
   TextInput,
   Animated,
   Easing,
-  Modal,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Entypo, Feather, Fontisto } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { RouteProp } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -30,10 +28,11 @@ import AppLine from "../components/AppLine";
 import Alert from "../components/Alert";
 import Header from "../components/Header";
 import ViewModal from "../components/ViewModal";
-import PCardModal from "../components/PCardModal";
+import PCardSelection from "../components/PCardSelection";
 import Receipt from "../components/Receipt";
+
 type RootStackParamList = {
-  Transactions: { showAlert?: boolean }; // Add other params as needed
+  Transactions: { showAlert?: boolean; selectedTransactionTitle?: string };
 };
 
 // Define a type for your route prop
@@ -41,6 +40,32 @@ type TransactionsRouteProp = RouteProp<RootStackParamList, "Transactions">;
 const Receipts: React.FC = () => {
   const route = useRoute<TransactionsRouteProp>();
   const [alertVisible, setAlertVisible] = useState(false);
+  const { selectedTransactionTitle } = route.params || {};
+  useEffect(() => {
+    if (selectedTransactionTitle) {
+      // Open the appropriate modal based on the transaction title
+      if (selectedTransactionTitle === "Chipotle") {
+        setIsStatusModalVisible(true);
+      } else if (selectedTransactionTitle === "Lyft") {
+        setIsStatusModalVisible(true);
+      }
+    }
+  }, [selectedTransactionTitle]);
+  useEffect(() => {
+    if (route.params?.showAlert) {
+      setAlertVisible(true);
+    }
+
+    if (route.params?.selectedTransactionTitle) {
+      const transaction: any = filteredTransactions.find(
+        (item: any) => item.title === route.params.selectedTransactionTitle
+      );
+      if (transaction) {
+        setSelectedTransaction(transaction);
+        setIsStatusModalVisible(true);
+      }
+    }
+  }, [route.params]);
 
   useEffect(() => {
     if (route.params?.showAlert) {
@@ -58,54 +83,19 @@ const Receipts: React.FC = () => {
     transaction.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
   // const filteredTransactions: any = [];
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isModalVisible) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 300,
-        easing: Easing.in(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [isModalVisible]);
-
-  const selectPcard = [
-    {
-      id: 1,
-      name: "Sarah’s PCard",
-      status: "Company Name | Department",
-    },
-    {
-      id: 2,
-      name: "Steve’s PCard",
-      status: "Company Name | Department",
-    },
-  ];
-  const [menuid, setmenuid] = useState(selectPcard[0].name);
-  const handleIconPress = () => {
-    setIsModalVisible(true);
-  };
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const handleTransactionPress = (transaction: any) => {
     setSelectedTransaction(transaction);
     setIsStatusModalVisible(true);
   };
+
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
 
   useEffect(() => {
-    if (isModalVisible || isStatusModalVisible) {
+    if (isStatusModalVisible) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 300,
@@ -120,7 +110,7 @@ const Receipts: React.FC = () => {
         useNativeDriver: true,
       }).start();
     }
-  }, [isModalVisible || isStatusModalVisible]);
+  }, [isStatusModalVisible]);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -142,40 +132,7 @@ const Receipts: React.FC = () => {
     <Screen style={styles.screen}>
       <Header />
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginVertical: RFPercentage(1.3),
-        }}
-      >
-        <Text
-          style={{
-            color: "#1C1C1C",
-            fontFamily: FontFamily.medium,
-            fontSize: RFPercentage(1.6),
-          }}
-        >
-          You are currently using
-        </Text>
-        <Text
-          style={{
-            marginHorizontal: RFPercentage(0.5),
-            color: Colors.primary,
-            fontFamily: FontFamily.medium,
-            fontSize: RFPercentage(1.6),
-          }}
-        >
-          {menuid}
-        </Text>
-        <TouchableOpacity activeOpacity={0.7} onPress={handleIconPress}>
-          <MaterialIcons
-            name="keyboard-arrow-down"
-            size={24}
-            color={Colors.primary}
-          />
-        </TouchableOpacity>
-      </View>
+      <PCardSelection />
 
       <AppLine />
 
@@ -296,13 +253,6 @@ const Receipts: React.FC = () => {
         )}
       </ScrollView>
 
-      <PCardModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        selectPcard={selectPcard}
-        menuid={menuid}
-        setmenuid={setmenuid}
-      />
       <ViewModal
         isStatusModalVisible={isStatusModalVisible}
         setIsStatusModalVisible={setIsStatusModalVisible}

@@ -20,6 +20,10 @@ import {
 } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation, useRoute } from "@react-navigation/native";
+
+// icon
+import ZoomIcon from "../../assets/svg/ZoomIcon";
+
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -134,12 +138,16 @@ const ViewModal = ({
             <View
               style={{
                 width: "90%",
+                marginTop: RFPercentage(1),
                 borderRadius: RFPercentage(1),
-                backgroundColor: Colors.gray,
+                borderWidth: 1,
+                borderColor: "#00000026",
+                backgroundColor: Colors.lightgray,
                 alignItems: "center",
                 justifyContent: "center",
                 overflow: "hidden",
-                marginTop: RFPercentage(1.9),
+                minHeight: 272,
+                position: "relative",
               }}
             >
               {image && (
@@ -150,7 +158,10 @@ const ViewModal = ({
                     style={{
                       width: "100%",
                       height: RFPercentage(16),
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.gray,
+                      borderTopLeftRadius: RFPercentage(1),
+                      borderTopRightRadius: RFPercentage(1),
+                      minHeight: 230,
                     }}
                   />
                   <TouchableOpacity
@@ -158,11 +169,8 @@ const ViewModal = ({
                     onPress={toggleModal}
                     activeOpacity={0.7}
                   >
-                    <FontAwesome5
-                      name="search-plus"
-                      size={20}
-                      color={Colors.white}
-                    />
+                    <ZoomIcon />
+                    <Text style={styles.zoomText}>Press to zoom</Text>
                   </TouchableOpacity>
                   <Modal visible={modalVisible} transparent={true}>
                     <TouchableOpacity
@@ -574,10 +582,14 @@ const ViewModal = ({
             style={{
               width: "90%",
               borderRadius: RFPercentage(1),
-              backgroundColor: Colors.gray,
+              borderWidth: 1,
+              borderColor: "#00000026",
+              backgroundColor: Colors.lightgray,
               alignItems: "center",
               justifyContent: "center",
               overflow: "hidden",
+              minHeight: 230,
+              position: "relative",
             }}
           >
             {image && (
@@ -588,6 +600,10 @@ const ViewModal = ({
                   style={{
                     width: "100%",
                     height: RFPercentage(16),
+                    backgroundColor: Colors.gray,
+                    borderTopLeftRadius: RFPercentage(1),
+                    borderTopRightRadius: RFPercentage(1),
+                    minHeight: 230,
                   }}
                 />
                 <TouchableOpacity
@@ -595,11 +611,8 @@ const ViewModal = ({
                   onPress={toggleModal}
                   activeOpacity={0.7}
                 >
-                  <FontAwesome5
-                    name="search-plus"
-                    size={20}
-                    color={Colors.white}
-                  />
+                  <ZoomIcon />
+                  <Text style={styles.zoomText}>Press to zoom</Text>
                 </TouchableOpacity>
                 <Modal visible={modalVisible} transparent={true}>
                   <TouchableOpacity
@@ -741,12 +754,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   zoomButton: {
+    flexDirection: "row",
     position: "absolute",
     top: RFPercentage(1),
-    right: RFPercentage(1),
+    right: RFPercentage(12),
+    left: RFPercentage(12),
     backgroundColor: Colors.black,
     padding: RFPercentage(1),
-    borderRadius: RFPercentage(1),
+    borderRadius: RFPercentage(16),
+  },
+  zoomText: {
+    marginLeft: RFPercentage(0.9),
+    color: Colors.white,
   },
   modalContainer: {
     flex: 1,

@@ -5,35 +5,30 @@ import {
   Text,
   Image,
   ScrollView,
-  Modal,
-  TouchableOpacity,
   Animated,
   Easing,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import CustomAlert from "../components/CustomAlert";
 
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
-import icons from "../config/icons";
 import { useRoute } from "@react-navigation/native";
 
 // modals
-import PCardModal from "../components/PCardModal";
 import StatusModal from "../components/StatusModal";
 
 // componnet
 import Screen from "../components/Screen";
-import PrimaryButton from "../components/PrimaryButton";
 import AppLine from "../components/AppLine";
 import Alert from "../components/Alert";
 import Header from "../components/Header";
+import PCardSelection from "../components/PCardSelection";
 
 // models
-// import postedTransactions from "../models/postedTransactions";
+import postedTransactions from "../models/postedTransactions";
 import { RouteProp } from "@react-navigation/native";
 import Transaction from "../components/Transaction";
 
@@ -53,8 +48,6 @@ const Transactions: React.FC = () => {
       // Open the appropriate modal based on the transaction title
       if (selectedTransactionTitle === "Chipotle") {
         setIsStatusModalVisible(true);
-      } else if (selectedTransactionTitle === "Lyft") {
-        setIsStatusModalVisible(true);
       }
     }
   }, [selectedTransactionTitle]);
@@ -64,7 +57,7 @@ const Transactions: React.FC = () => {
     }
 
     if (route.params?.selectedTransactionTitle) {
-      const transaction: any = transactionSlip.find(
+      const transaction: any = postedTransactions.find(
         (item) => item.title === route.params.selectedTransactionTitle
       );
       if (transaction) {
@@ -78,14 +71,13 @@ const Transactions: React.FC = () => {
     setAlertVisible(false);
     // You can perform any other actions needed after the alert closes
   };
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isStatusModalVisible, setIsStatusModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (isModalVisible || isStatusModalVisible) {
+    if (isStatusModalVisible) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 300,
@@ -100,118 +92,11 @@ const Transactions: React.FC = () => {
         useNativeDriver: true,
       }).start();
     }
-  }, [isModalVisible || isStatusModalVisible]);
+  }, [isStatusModalVisible]);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
-  const selectPcard = [
-    {
-      id: 1,
-      name: "Sarah’s PCard",
-      status: "Company Name | Department",
-    },
-    {
-      id: 2,
-      name: "Steve’s PCard",
-      status: "Company Name | Department",
-    },
-  ];
-  const [menuid, setmenuid] = useState(selectPcard[0].name);
-  const handleIconPress = () => {
-    setIsModalVisible(true);
-  };
-  const transactionSlip = [
-    {
-      id: 1,
-      trendimage: icons.plusdot,
-      title: "Amazon",
-      amount: "$1,399.00",
-      status: "Missing Receipt",
-      textcolor: "#874D00",
-      bgcolor: "#FFFBE6",
-    },
-    {
-      id: 2,
-      trendimage: icons.plusdot,
-      title: "MEDITERRANEAN CA...",
-      amount: "$62.16",
-      status: "Missing Receipt",
-      textcolor: "#874D00",
-      bgcolor: "#FFFBE6",
-    },
-    {
-      id: 3,
-      trendimage: icons.plusdot,
-      title: "Chipotle",
-      amount: "$13.50",
-      status: "Missing Receipt",
-      textcolor: "#874D00",
-      bgcolor: "#FFFBE6",
-    },
-    {
-      id: 4,
-      trendimage: icons.picslip,
-      title: "Lyft",
-      amount: "$15.25",
-      status: "Pending",
-      textcolor: "#385F68",
-      bgcolor: "#E2F2F8",
-    },
-    {
-      id: 5,
-      trendimage: icons.picslip,
-      title: "Chick-fil-At",
-      amount: "$25.50",
-      status: "Complete",
-      textcolor: "#206152",
-      bgcolor: "#DFEEEC",
-    },
-    {
-      id: 6,
-      trendimage: icons.plusdot,
-      title: "Amazon",
-      amount: "$1,399.00",
-      status: "Missing Receipt",
-      textcolor: "#874D00",
-      bgcolor: "#FFFBE6",
-    },
-    {
-      id: 7,
-      trendimage: icons.plusdot,
-      title: "MEDITERRANEAN CA...",
-      amount: "$62.16",
-      status: "Missing Receipt",
-      textcolor: "#874D00",
-      bgcolor: "#FFFBE6",
-    },
-    {
-      id: 8,
-      trendimage: icons.plusdot,
-      title: "Chipotle",
-      amount: "$13.50",
-      status: "Missing Receipt",
-      textcolor: "#874D00",
-      bgcolor: "#FFFBE6",
-    },
-    {
-      id: 9,
-      trendimage: icons.picslip,
-      title: "Lyft",
-      amount: "$15.25",
-      status: "Pending",
-      textcolor: "#385F68",
-      bgcolor: "#E2F2F8",
-    },
-    {
-      id: 10,
-      trendimage: icons.picslip,
-      title: "Chick-fil-At",
-      amount: "$25.50",
-      status: "Complete",
-      textcolor: "#206152",
-      bgcolor: "#DFEEEC",
-    },
-  ];
+
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const handleTransactionPress = (transaction: any) => {
     setSelectedTransaction(transaction);
@@ -236,41 +121,7 @@ const Transactions: React.FC = () => {
   return (
     <Screen style={styles.screen}>
       <Header />
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginVertical: RFPercentage(1.3),
-        }}
-      >
-        <Text
-          style={{
-            color: "#1C1C1C",
-            fontFamily: FontFamily.medium,
-            fontSize: RFPercentage(1.6),
-          }}
-        >
-          You are currently using
-        </Text>
-        <Text
-          style={{
-            marginHorizontal: RFPercentage(0.5),
-            color: Colors.primary,
-            fontFamily: FontFamily.medium,
-            fontSize: RFPercentage(1.6),
-          }}
-        >
-          {menuid}
-        </Text>
-        <TouchableOpacity activeOpacity={0.7} onPress={handleIconPress}>
-          <MaterialIcons
-            name="keyboard-arrow-down"
-            size={24}
-            color={Colors.primary}
-          />
-        </TouchableOpacity>
-      </View>
+      <PCardSelection />
 
       <AppLine />
 
@@ -326,7 +177,7 @@ const Transactions: React.FC = () => {
         showsVerticalScrollIndicator={false}
         style={{ width: "100%" }}
       >
-        {transactionSlip.map((item, i) => (
+        {postedTransactions.map((item, i) => (
           <Transaction
             key={i}
             item={item}
@@ -334,14 +185,6 @@ const Transactions: React.FC = () => {
           />
         ))}
       </ScrollView>
-
-      <PCardModal
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        selectPcard={selectPcard}
-        menuid={menuid}
-        setmenuid={setmenuid}
-      />
 
       <StatusModal
         isStatusModalVisible={isStatusModalVisible}
