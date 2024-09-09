@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    minHeight: 272, // minimum height
+    minHeight: 250, // minimum height
     position: "relative",
   },
   image: {
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
   },
   replaceButton: {
     width: "100%",
-    borderBottomLeftRadius: RFPercentage(1),
-    borderBottomRightRadius: RFPercentage(1),
+    borderBottomLeftRadius: RFPercentage(0.5),
+    borderBottomRightRadius: RFPercentage(0.5),
     borderTopWidth: 1,
     borderColor: "#00000026",
     backgroundColor: Colors.white,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     paddingVertical: RFPercentage(1),
     flexDirection: "row",
     position: "absolute",
-    bottom: 0,
+    bottom: -1,
     right: 0,
     left: 0,
   },

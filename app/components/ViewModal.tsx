@@ -23,6 +23,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 
 // icon
 import ZoomIcon from "../../assets/svg/ZoomIcon";
+import SwapIcon from "../../assets/svg/SwapIcon";
 
 //config
 import Colors from "../config/Colors";
@@ -110,10 +111,6 @@ const ViewModal = ({
       setIsStatusModalVisible(false);
 
       // Add a slight delay to ensure the modal closes before setting params
-      setTimeout(() => {
-        // Update the screen's parameters to trigger the alert
-        navigation.setParams({ showAlert: true });
-      }, 300); // Adjust the delay as needed
     } else {
       Alert.alert("Please fill all Fields");
     }
@@ -201,17 +198,14 @@ const ViewModal = ({
                   borderColor: Colors.lightWhite,
                 }}
               >
-                <FontAwesome5
-                  name="exchange-alt"
-                  size={20}
-                  color={Colors.primary}
-                />
+                <SwapIcon />
                 <Text
                   style={{
                     marginLeft: RFPercentage(1),
-                    color: Colors.blacktext,
+                    color: Colors.link,
                     fontFamily: FontFamily.regular,
-                    fontSize: RFPercentage(1.7),
+                    fontSize: RFPercentage(1.9),
+                    fontWeight: 300,
                   }}
                 >
                   Replace

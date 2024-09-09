@@ -24,7 +24,8 @@ import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import TitleField from "../components/TitleField";
 import PrimaryButton from "../components/PrimaryButton";
-import ImageUploader from "../components/ImageUploader";
+import ZoomIcon from "../../assets/svg/ZoomIcon";
+import SwapIcon from "../../assets/svg/SwapIcon";
 
 const ReceiptSubmit = ({ navigation, route }: any) => {
   const [supplier, setSupplier] = useState("MEDITERRANEAN CAFE");
@@ -154,7 +155,100 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
         </View>
 
         {/* image replace */}
-        <ImageUploader image={image} onReplaceImage={handleReplaceImage} />
+        <View
+          style={{
+            width: "90%",
+            borderRadius: RFPercentage(1),
+            borderWidth: 1,
+            borderColor: "#00000026",
+            backgroundColor: Colors.lightgray,
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+            minHeight: 272,
+            position: "relative",
+          }}
+        >
+          {image && (
+            <>
+              <Image
+                source={{ uri: image }}
+                // source={image}
+                style={{
+                  width: "100%",
+                  height: RFPercentage(16),
+                  backgroundColor: Colors.black,
+                  borderTopLeftRadius: RFPercentage(1),
+                  borderTopRightRadius: RFPercentage(1),
+                  minHeight: 230,
+                  position: "absolute",
+                  top: 0,
+                }}
+              />
+              <TouchableOpacity
+                style={styles.zoomButton}
+                onPress={toggleModal}
+                activeOpacity={0.7}
+              >
+                <ZoomIcon />
+                <Text
+                  style={{
+                    marginLeft: RFPercentage(0.9),
+                    color: Colors.white,
+                  }}
+                >
+                  Press to zoom
+                </Text>
+              </TouchableOpacity>
+              <Modal visible={modalVisible} transparent={true}>
+                <TouchableOpacity
+                  style={styles.modalContainer}
+                  onPress={toggleModal}
+                >
+                  <Image
+                    source={{ uri: image }}
+                    style={styles.modalImage}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Modal>
+            </>
+          )}
+
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={handleReplaceImage}
+            style={{
+              width: "100%",
+              borderBottomLeftRadius: RFPercentage(1),
+              borderBottomRightRadius: RFPercentage(1),
+              borderTopWidth: 1,
+              borderColor: "#00000026",
+              backgroundColor: Colors.white,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: RFPercentage(1),
+              flexDirection: "row",
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              left: 0,
+            }}
+          >
+            <SwapIcon />
+            <Text
+              style={{
+                marginLeft: RFPercentage(1),
+                color: Colors.link,
+                fontFamily: FontFamily.regular,
+                fontSize: RFPercentage(1.9),
+                fontWeight: 300,
+              }}
+            >
+              Replace
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         {/* auto filled detail area  */}
         <View

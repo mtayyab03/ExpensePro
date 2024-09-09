@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 //config
 import Colors from "../config/Colors";
@@ -17,6 +17,7 @@ import { FontFamily } from "../config/font";
 
 // icon
 import ZoomIcon from "../../assets/svg/ZoomIcon";
+import SwapIcon from "../../assets/svg/SwapIcon";
 
 // componnet
 import PrimaryButton from "../components/PrimaryButton";
@@ -142,17 +143,14 @@ const StatusModal = ({
                 borderColor: Colors.lightWhite,
               }}
             >
-              <FontAwesome5
-                name="exchange-alt"
-                size={20}
-                color={Colors.primary}
-              />
+              <SwapIcon />
               <Text
                 style={{
                   marginLeft: RFPercentage(1),
-                  color: Colors.blacktext,
+                  color: Colors.link,
                   fontFamily: FontFamily.regular,
-                  fontSize: RFPercentage(1.7),
+                  fontSize: RFPercentage(1.9),
+                  fontWeight: 300,
                 }}
               >
                 Replace

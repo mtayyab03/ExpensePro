@@ -3,7 +3,6 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import {
   Text,
   Platform,
-  Modal,
   View,
   StyleSheet,
   TouchableOpacity,

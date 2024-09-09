@@ -144,9 +144,10 @@ const NotificationScreen = ({ navigation }: any) => {
             alignItems: "center",
             justifyContent: "center",
             borderWidth: RFPercentage(0.15),
+            backgroundColor: Colors.white,
             borderColor: Colors.lightWhite,
             borderRadius: RFPercentage(2),
-            paddingVertical: RFPercentage(10),
+            paddingVertical: RFPercentage(23),
             paddingHorizontal: RFPercentage(4),
             marginTop: RFPercentage(3),
           }}
@@ -154,8 +155,8 @@ const NotificationScreen = ({ navigation }: any) => {
           <Image
             source={icons.noevent}
             style={{
-              width: RFPercentage(16),
-              height: RFPercentage(20),
+              width: RFPercentage(22),
+              height: RFPercentage(14),
             }}
           />
           <Text
