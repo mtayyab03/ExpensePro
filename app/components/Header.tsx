@@ -8,10 +8,13 @@ import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isPressed: boolean; // Add a prop for the pressed state
+}
+
+const Header: React.FC<HeaderProps> = ({ isPressed }) => {
   const navigation = useNavigation<any>();
   const { notificationCount } = useNotification();
-  const [isPressed, setIsPressed] = useState(false);
   return (
     <View
       style={{
@@ -38,11 +41,9 @@ const Header: React.FC = () => {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
-            setIsPressed(true);
             // Navigate to NotificationScreen or perform other actions
             navigation.navigate("NotificationScreen");
           }}
-          onPressOut={() => setIsPressed(false)} // Reset the pressed state when touch is released
           style={{
             position: "relative",
             width: RFPercentage(3.2),

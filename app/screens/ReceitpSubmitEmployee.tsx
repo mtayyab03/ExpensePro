@@ -8,24 +8,16 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
-  Platform,
   Alert,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import {
-  Feather,
-  FontAwesome5,
-  Entypo,
-  MaterialIcons,
-  Ionicons,
-} from "@expo/vector-icons";
+import { Feather, Entypo, MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
-import icons from "../config/icons";
 
 // componnet
 import Screen from "../components/Screen";
@@ -74,7 +66,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (selectedDate: any) => {
+  const handleConfirm = (selectedDate: Date) => {
     hideDatePicker();
     const formattedDate = `${selectedDate
       .getDate()
@@ -132,7 +124,7 @@ const ReceitpSubmitEmployee = ({ navigation, route }: any) => {
 
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={false} />
 
       <ScrollView
         contentContainerStyle={{

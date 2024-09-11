@@ -11,13 +11,7 @@ import {
   Alert,
 } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import {
-  Ionicons,
-  Feather,
-  FontAwesome5,
-  Entypo,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation, useRoute } from "@react-navigation/native";
 

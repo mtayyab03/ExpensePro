@@ -15,6 +15,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
+
 //screens
 import Transactions from "../screens/Transactions";
 import Receipts from "../screens/Receipts";
@@ -42,7 +43,7 @@ const EmptyScreen: React.FC = () => {
 };
 const BottomTab: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const navigation = useNavigation<NavigationProp>();
   const fadeAnim = useRef(new Animated.Value(0)).current;
 

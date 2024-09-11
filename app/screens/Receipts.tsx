@@ -82,7 +82,6 @@ const Receipts: React.FC = () => {
   const filteredTransactions = submittedReceipts.filter((transaction) =>
     transaction.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  // const filteredTransactions: any = [];
   const [modalVisible, setModalVisible] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -130,7 +129,7 @@ const Receipts: React.FC = () => {
   };
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={false} />
 
       <PCardSelection />
 

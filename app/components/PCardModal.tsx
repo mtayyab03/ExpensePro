@@ -1,25 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  ScrollView,
-  Modal,
-  TouchableOpacity,
-  Animated,
-  Easing,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
 import { RFPercentage } from "react-native-responsive-fontsize";
-import { MaterialIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import CustomAlert from "../components/CustomAlert";
 
 //config
-import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
-import icons from "../config/icons";
-import { useRoute, useNavigation } from "@react-navigation/native";
 import CloseIcon from "../../assets/svg/CloseIcon";
 
 const CustomModal = ({

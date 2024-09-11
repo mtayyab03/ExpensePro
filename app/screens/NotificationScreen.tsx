@@ -64,8 +64,8 @@ const NotificationScreen = ({ navigation }: any) => {
   // const { notificationCount, setNotificationCount } = route.params;
   const { notificationCount, setNotificationCount } = useNotification();
   // Handle press function to toggle the isSelected state
-  const handlePress = (index: any) => {
-    const updatedCards = cards.map((card: any, i: any) =>
+  const handlePress = (index: number) => {
+    const updatedCards = cards.map((card: any, i: number) =>
       i === index ? { ...card, isSelected: !card.isSelected } : card
     );
     setCards(updatedCards);
@@ -94,7 +94,7 @@ const NotificationScreen = ({ navigation }: any) => {
   };
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={true} />
       <View
         style={{
           flexDirection: "row",

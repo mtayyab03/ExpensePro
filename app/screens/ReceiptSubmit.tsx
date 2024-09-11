@@ -50,7 +50,7 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (selectedDate: any) => {
+  const handleConfirm = (selectedDate: Date) => {
     hideDatePicker();
     const formattedDate = `${selectedDate
       .getDate()
@@ -109,7 +109,7 @@ const ReceiptSubmit = ({ navigation, route }: any) => {
   };
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={false} />
 
       <ScrollView
         contentContainerStyle={{

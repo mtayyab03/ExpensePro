@@ -118,7 +118,7 @@ const ReceiptCategory = ({ route }: any) => {
   ];
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={false} />
 
       <View
         style={{

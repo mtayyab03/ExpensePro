@@ -120,7 +120,7 @@ const Transactions: React.FC = () => {
 
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={false} />
       <PCardSelection />
 
       <AppLine />

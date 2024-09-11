@@ -27,8 +27,6 @@ import Screen from "../components/Screen";
 import Header from "../components/Header";
 import AppLine from "../components/AppLine";
 import PrimaryButton from "../components/PrimaryButton";
-import SwapIcon from "../../assets/svg/SwapIcon";
-import ZoomIcon from "../../assets/svg/ZoomIcon";
 
 // Define your navigation parameter types
 type RootStackParamList = {
@@ -67,7 +65,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
   };
   return (
     <Screen style={styles.screen}>
-      <Header />
+      <Header isPressed={false} />
 
       <View
         style={{
