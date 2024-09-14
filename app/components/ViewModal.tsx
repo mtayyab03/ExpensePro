@@ -15,10 +15,6 @@ import { Ionicons, Feather, MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-// icon
-import ZoomIcon from "../../assets/svg/ZoomIcon";
-import SwapIcon from "../../assets/svg/SwapIcon";
-
 //config
 import Colors from "../config/Colors";
 import { FontFamily } from "../config/font";
@@ -30,6 +26,8 @@ import StatusTag from "./StatusTag";
 import CloseIcon from "../../assets/svg/CloseIcon";
 import TitleField from "../components/TitleField";
 import CheckSelected from "./CheckSelected";
+import ImageReplace from "./ImageReplace";
+import ImageDisplay from "./ImageDisplay";
 
 const ViewModal = ({
   isStatusModalVisible,
@@ -126,86 +124,12 @@ const ViewModal = ({
             showsVerticalScrollIndicator={false}
             style={{ width: "100%", height: "70%" }}
           >
-            <View
-              style={{
-                width: "90%",
-                marginTop: RFPercentage(1),
-                borderRadius: RFPercentage(1),
-                borderWidth: 1,
-                borderColor: "#00000026",
-                backgroundColor: Colors.lightgray,
-                alignItems: "center",
-                justifyContent: "center",
-                overflow: "hidden",
-                minHeight: 272,
-                position: "relative",
-              }}
-            >
-              {image && (
-                <>
-                  <Image
-                    source={image}
-                    // source={image}
-                    style={{
-                      width: "100%",
-                      height: RFPercentage(16),
-                      backgroundColor: Colors.gray,
-                      borderTopLeftRadius: RFPercentage(1),
-                      borderTopRightRadius: RFPercentage(1),
-                      minHeight: 230,
-                    }}
-                  />
-                  <TouchableOpacity
-                    style={styles.zoomButton}
-                    onPress={toggleModal}
-                    activeOpacity={0.7}
-                  >
-                    <ZoomIcon />
-                    <Text style={styles.zoomText}>Press to zoom</Text>
-                  </TouchableOpacity>
-                  <Modal visible={modalVisible} transparent={true}>
-                    <TouchableOpacity
-                      style={styles.modalContainer}
-                      onPress={toggleModal}
-                    >
-                      <Image
-                        source={image}
-                        style={styles.modalImage}
-                        resizeMode="contain"
-                      />
-                    </TouchableOpacity>
-                  </Modal>
-                </>
-              )}
-
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={handleReplaceImage}
-                style={{
-                  width: "100%",
-                  backgroundColor: Colors.lightwhite,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingVertical: RFPercentage(2),
-                  flexDirection: "row",
-                  borderWidth: RFPercentage(0.1),
-                  borderColor: Colors.lightWhite,
-                }}
-              >
-                <SwapIcon />
-                <Text
-                  style={{
-                    marginLeft: RFPercentage(1),
-                    color: Colors.link,
-                    fontFamily: FontFamily.regular,
-                    fontSize: RFPercentage(1.9),
-                    fontWeight: 300,
-                  }}
-                >
-                  Replace
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <ImageReplace
+              image={image}
+              modalVisible={modalVisible}
+              toggleModal={toggleModal}
+              handleReplaceImage={handleReplaceImage}
+            />
 
             {/* auto filled detail area  */}
             <View
@@ -566,57 +490,11 @@ const ViewModal = ({
             </TouchableOpacity>
           </View>
           {/* image view */}
-          <View
-            style={{
-              width: "90%",
-              borderRadius: RFPercentage(1),
-              borderWidth: 1,
-              borderColor: "#00000026",
-              backgroundColor: Colors.lightgray,
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              minHeight: 230,
-              position: "relative",
-            }}
-          >
-            {image && (
-              <>
-                <Image
-                  source={image}
-                  // source={image}
-                  style={{
-                    width: "100%",
-                    height: RFPercentage(16),
-                    backgroundColor: Colors.gray,
-                    borderTopLeftRadius: RFPercentage(1),
-                    borderTopRightRadius: RFPercentage(1),
-                    minHeight: 230,
-                  }}
-                />
-                <TouchableOpacity
-                  style={styles.zoomButton}
-                  onPress={toggleModal}
-                  activeOpacity={0.7}
-                >
-                  <ZoomIcon />
-                  <Text style={styles.zoomText}>Press to zoom</Text>
-                </TouchableOpacity>
-                <Modal visible={modalVisible} transparent={true}>
-                  <TouchableOpacity
-                    style={styles.modalContainer}
-                    onPress={toggleModal}
-                  >
-                    <Image
-                      source={image}
-                      style={styles.modalImage}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </Modal>
-              </>
-            )}
-          </View>
+          <ImageDisplay
+            image={image}
+            modalVisible={modalVisible}
+            toggleModal={toggleModal}
+          />
 
           <View
             style={{

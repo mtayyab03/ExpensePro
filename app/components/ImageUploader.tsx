@@ -85,7 +85,7 @@ const ImageUploader: React.FC<ImageContainerProps> = ({
       )}
 
       <TouchableOpacity
-        activeOpacity={0.7}
+        activeOpacity={0.9}
         onPress={onReplaceImage}
         style={styles.replaceButton}
       >
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    minHeight: 250, // minimum height
+
     position: "relative",
   },
   image: {

@@ -48,7 +48,7 @@ const ReceiptSubmitLong = ({ route }: any) => {
   const handleReplaceImage = async () => {
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false,
       quality: 1,
     });
 
